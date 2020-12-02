@@ -37,19 +37,19 @@ from src.model.util.dimension_handler import copy_all_names as copy_all_dims_nam
 
 
 def clasify_new_instances(existing_instances, bayesian_net, aux_inference_algorithm, inf_threshold, new_instances):
-    &#34;&#34;&#34;
-    For each unclasified instance received, infers the values of the dimensions according to their features.
+    &#34;&#34;&#34;For each unclasified instance received, infers the values of the dimensions according to their features.
 
-    :param existing_instances: dict(str, list(int)), where k is the name of a f or dimension in the model, and v is
-        a list of values for it.
-    :param bayesian_net: src.model.inference.BayesianNetwork class used to clasify instances.
-    :param aux_inference_algorithm: src.model.inference.inference_algorithm.InferenceAlgorithm implementation used when
-        the inferior threshold is not reached.
-    :param inf_threshold: int that contains the minimal number of instances required to clasify with the BN.
-    :param new_instances: list(Instance) that contains the new instances to insert. The instances are not classified.
-    :return: a list(dict(str,tuple(int, int)) + dict(str,int)), that contains all the clasified instances. The key of
-        the first dict is a f name, and the value is a tuple with the f level and the f value. The key of
-        the second dict is a dimension name, and the value is the infered value for it.
+    Args:
+        existing_instances: a dict(str, list(int)), where k is the name of a f or dimension in the model, and v is
+            a list of values for it.
+        bayesian_net: a BayesianNetwork object used to clasify instances.
+        aux_inference_algorithm: an InferenceAlgorithm implementation used when the inferior threshold is not reached.
+        inf_threshold: an int that contains the minimal number of instances required to clasify with the BN.
+        new_instances: a list(Instance) that contains the new instances to insert. The instances are not classified.
+    Returns:
+        a list(dict(str,tuple(int, int)) + dict(str,int)), that contains all the clasified instances. The key of
+            the first dict is a f name, and the value is a tuple with the f level and the f value. The key of
+            the second dict is a dimension name, and the value is the infered value for it.
     &#34;&#34;&#34;
     for i in new_instances:
         # We must infer the dimensions for the given features. f_tuple[0] has the level for the f.
@@ -66,18 +66,17 @@ def clasify_new_instances(existing_instances, bayesian_net, aux_inference_algori
 
 
 def __clasify_instance(existing_instances, bayesian_net, aux_inference_algorithm, inf_threshold, named_feats):
-    &#34;&#34;&#34;
-    Infers the dimensions values according to the user f levels. The inference is made with an auxiliar inference
-    mechanism in case the number of actual new instances does not surpass an inferior threshold.
+    &#34;&#34;&#34;Infers the dimensions values according to the user factor levels. The inference is made with an auxiliar
+    inference mechanism in case the number of actual new instances does not surpass an inferior threshold.
 
-    :param existing_instances: dict(str, list(int)), where k is the name of a f or dimension in the model, and v is
-        a list of values for it.
-    :param bayesian_net: src.model.inference.BayesianNetwork class used to clasify instances.
-    :param aux_inference_algorithm: src.model.inference.inference_algorithm.InferenceAlgorithm implementation used when
-        the inferior threshold is not reached.
-    :param inf_threshold: int that contains the minimal number of instances required to clasify with the BN.
-    :param named_feats: dict(str, int) where k is a f name, and v is his corresponding level.
-    :return: a dict(str, int) where k is a dimension name, and v is the infered value for the dimension
+    Args:
+        existing_instances: a dict(str, list(int)), where k is the name of a factor or dimension in the model, and v is
+            a list of values for it.
+        bayesian_net: a BayesianNetwork object used to clasify instances.
+        aux_inference_algorithm: an InferenceAlgorithm implementation used when the inferior threshold is not reached.
+        inf_threshold: an int that contains the minimal number of instances required to clasify with the BN.
+        named_feats: a dict(str, int) where k is a factor name, and v is his corresponding level.
+    Returns: a dict(str, int) where k is a dimension name, and v is the infered value for the dimension
     &#34;&#34;&#34;
     dimensions = copy_all_dims_names()
 
@@ -110,14 +109,22 @@ def __clasify_instance(existing_instances, bayesian_net, aux_inference_algorithm
 </code></dt>
 <dd>
 <div class="desc"><p>For each unclasified instance received, infers the values of the dimensions according to their features.</p>
-<p>:param existing_instances: dict(str, list(int)), where k is the name of a f or dimension in the model, and v is
-a list of values for it.
-:param bayesian_net: src.model.inference.BayesianNetwork class used to clasify instances.
-:param aux_inference_algorithm: src.model.inference.inference_algorithm.InferenceAlgorithm implementation used when
-the inferior threshold is not reached.
-:param inf_threshold: int that contains the minimal number of instances required to clasify with the BN.
-:param new_instances: list(Instance) that contains the new instances to insert. The instances are not classified.
-:return: a list(dict(str,tuple(int, int)) + dict(str,int)), that contains all the clasified instances. The key of
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>existing_instances</code></strong></dt>
+<dd>a dict(str, list(int)), where k is the name of a f or dimension in the model, and v is
+a list of values for it.</dd>
+<dt><strong><code>bayesian_net</code></strong></dt>
+<dd>a BayesianNetwork object used to clasify instances.</dd>
+<dt><strong><code>aux_inference_algorithm</code></strong></dt>
+<dd>an InferenceAlgorithm implementation used when the inferior threshold is not reached.</dd>
+<dt><strong><code>inf_threshold</code></strong></dt>
+<dd>an int that contains the minimal number of instances required to clasify with the BN.</dd>
+<dt><strong><code>new_instances</code></strong></dt>
+<dd>a list(Instance) that contains the new instances to insert. The instances are not classified.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>a list(dict(str,tuple(int, int)) + dict(str,int)), that contains all the clasified instances. The key of
 the first dict is a f name, and the value is a tuple with the f level and the f value. The key of
 the second dict is a dimension name, and the value is the infered value for it.</p></div>
 <details class="source">
@@ -125,19 +132,19 @@ the second dict is a dimension name, and the value is the infered value for it.<
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def clasify_new_instances(existing_instances, bayesian_net, aux_inference_algorithm, inf_threshold, new_instances):
-    &#34;&#34;&#34;
-    For each unclasified instance received, infers the values of the dimensions according to their features.
+    &#34;&#34;&#34;For each unclasified instance received, infers the values of the dimensions according to their features.
 
-    :param existing_instances: dict(str, list(int)), where k is the name of a f or dimension in the model, and v is
-        a list of values for it.
-    :param bayesian_net: src.model.inference.BayesianNetwork class used to clasify instances.
-    :param aux_inference_algorithm: src.model.inference.inference_algorithm.InferenceAlgorithm implementation used when
-        the inferior threshold is not reached.
-    :param inf_threshold: int that contains the minimal number of instances required to clasify with the BN.
-    :param new_instances: list(Instance) that contains the new instances to insert. The instances are not classified.
-    :return: a list(dict(str,tuple(int, int)) + dict(str,int)), that contains all the clasified instances. The key of
-        the first dict is a f name, and the value is a tuple with the f level and the f value. The key of
-        the second dict is a dimension name, and the value is the infered value for it.
+    Args:
+        existing_instances: a dict(str, list(int)), where k is the name of a f or dimension in the model, and v is
+            a list of values for it.
+        bayesian_net: a BayesianNetwork object used to clasify instances.
+        aux_inference_algorithm: an InferenceAlgorithm implementation used when the inferior threshold is not reached.
+        inf_threshold: an int that contains the minimal number of instances required to clasify with the BN.
+        new_instances: a list(Instance) that contains the new instances to insert. The instances are not classified.
+    Returns:
+        a list(dict(str,tuple(int, int)) + dict(str,int)), that contains all the clasified instances. The key of
+            the first dict is a f name, and the value is a tuple with the f level and the f value. The key of
+            the second dict is a dimension name, and the value is the infered value for it.
     &#34;&#34;&#34;
     for i in new_instances:
         # We must infer the dimensions for the given features. f_tuple[0] has the level for the f.

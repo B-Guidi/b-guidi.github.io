@@ -31,7 +31,7 @@
 from flask import request
 from flask_restful import Resource
 
-from src.model import mediator
+from src.model.mediator import process_events, insert_events, insert_instances
 
 
 class Events(Resource):
@@ -39,8 +39,7 @@ class Events(Resource):
     Resource for handling events.
     &#34;&#34;&#34;
     def put(self):
-        &#34;&#34;&#34;
-        Receives events and persist them in the database.
+        &#34;&#34;&#34;Receives events and persist them in the database.
 
         JSON format required:
             {0: {&#39;user_id&#39;: 0, &#39;factor_id&#39;: 0, &#39;value&#39;: 88},
@@ -55,7 +54,7 @@ class Events(Resource):
         events = []
         [events.append(e) for e in json.loads(request.json).values()]
 
-        return json.dumps(mediator.insert_events(events)), 200
+        return json.dumps(insert_events(events)), 200
 
 
 class Instances(Resource):
@@ -63,23 +62,22 @@ class Instances(Resource):
     Resource for handling instances.
     &#34;&#34;&#34;
     def put(self):
-        &#34;&#34;&#34;
-        Receives instances, persist them in the database and then retrains the model.
+        &#34;&#34;&#34;Receives instances, persist them in the database and then retrains the model.
 
         JSON format required:
             {0: {&#39;features&#39;: {&#39;TiempoLecturaUserStory&#39;: 12, &#39;TiempoTrabajoUserStory&#39;: 31, &#39;ParticipacionesMeetings&#39;: 6,
                      &#39;Recurso&#39;: &#39;Texto&#39;, &#39;LineasCodigo&#39;: 45},
-                &#39;dimensions&#39;: {&#39;Percepcion&#39;: -2, &#39;Procesamiento&#39;: -1, &#39;XYZ&#39;: 0, &#39;Entendimiento&#39;: 3}},
+                &#39;dimensions&#39;: {&#39;Percepcion&#39;: -2, &#39;Procesamiento&#39;: -1, &#39;Recepcion&#39;: 0, &#39;Entendimiento&#39;: 3}},
             1: {&#39;features&#39;: {&#39;TiempoLecturaUserStory&#39;: 75, &#39;TiempoTrabajoUserStory&#39;: 125, &#39;ParticipacionesMeetings&#39;: 9,
                              &#39;Recurso&#39;: &#39;Texto&#39;, &#39;LineasCodigo&#39;: 73},
-                &#39;dimensions&#39;: {&#39;Percepcion&#39;: 2, &#39;Procesamiento&#39;: 0, &#39;XYZ&#39;: 0, &#39;Entendimiento&#39;: -1}},
+                &#39;dimensions&#39;: {&#39;Percepcion&#39;: 2, &#39;Procesamiento&#39;: 0, &#39;Recepcion&#39;: 0, &#39;Entendimiento&#39;: -1}},
             2: {&#39;features&#39;: {&#39;TiempoLecturaUserStory&#39;: 65, &#39;TiempoTrabajoUserStory&#39;: 146, &#39;ParticipacionesMeetings&#39;: 12,
                              &#39;Recurso&#39;: &#39;Imagen&#39;, &#39;LineasCodigo&#39;: 147},
-                &#39;dimensions&#39;: {&#39;Percepcion&#39;: 3, &#39;Procesamiento&#39;: 2, &#39;XYZ&#39;: 1, &#39;Entendimiento&#39;: -3}}}
+                &#39;dimensions&#39;: {&#39;Percepcion&#39;: 3, &#39;Procesamiento&#39;: 2, &#39;Recepcion&#39;: 1, &#39;Entendimiento&#39;: -3}}}
         &#34;&#34;&#34;
         instances = []
         [instances.append(i) for i in json.loads(request.json).values()]
-        return json.dumps(mediator.insert_instances(instances)), 200
+        return json.dumps(insert_instances(instances)), 200
 
 
 class ModelUpdate(Resource):
@@ -87,10 +85,9 @@ class ModelUpdate(Resource):
     Resource for handling the processing of events by the app.
     &#34;&#34;&#34;
     def post(self):
+        &#34;&#34;&#34;Process the stored event data, generates instances througth them and then retrains the model with them.
         &#34;&#34;&#34;
-        Process the stored event data, generates instances througth them and then retrains the model with them.
-        &#34;&#34;&#34;
-        result = mediator.process_events()
+        result = process_events()
         print(result)
         return json.dumps(result[0]), result[1]</code></pre>
 </details>
@@ -118,8 +115,7 @@ class ModelUpdate(Resource):
     Resource for handling events.
     &#34;&#34;&#34;
     def put(self):
-        &#34;&#34;&#34;
-        Receives events and persist them in the database.
+        &#34;&#34;&#34;Receives events and persist them in the database.
 
         JSON format required:
             {0: {&#39;user_id&#39;: 0, &#39;factor_id&#39;: 0, &#39;value&#39;: 88},
@@ -134,7 +130,7 @@ class ModelUpdate(Resource):
         events = []
         [events.append(e) for e in json.loads(request.json).values()]
 
-        return json.dumps(mediator.insert_events(events)), 200</code></pre>
+        return json.dumps(insert_events(events)), 200</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -170,8 +166,7 @@ class ModelUpdate(Resource):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def put(self):
-    &#34;&#34;&#34;
-    Receives events and persist them in the database.
+    &#34;&#34;&#34;Receives events and persist them in the database.
 
     JSON format required:
         {0: {&#39;user_id&#39;: 0, &#39;factor_id&#39;: 0, &#39;value&#39;: 88},
@@ -186,7 +181,7 @@ class ModelUpdate(Resource):
     events = []
     [events.append(e) for e in json.loads(request.json).values()]
 
-    return json.dumps(mediator.insert_events(events)), 200</code></pre>
+    return json.dumps(insert_events(events)), 200</code></pre>
 </details>
 </dd>
 </dl>
@@ -205,23 +200,22 @@ class ModelUpdate(Resource):
     Resource for handling instances.
     &#34;&#34;&#34;
     def put(self):
-        &#34;&#34;&#34;
-        Receives instances, persist them in the database and then retrains the model.
+        &#34;&#34;&#34;Receives instances, persist them in the database and then retrains the model.
 
         JSON format required:
             {0: {&#39;features&#39;: {&#39;TiempoLecturaUserStory&#39;: 12, &#39;TiempoTrabajoUserStory&#39;: 31, &#39;ParticipacionesMeetings&#39;: 6,
                      &#39;Recurso&#39;: &#39;Texto&#39;, &#39;LineasCodigo&#39;: 45},
-                &#39;dimensions&#39;: {&#39;Percepcion&#39;: -2, &#39;Procesamiento&#39;: -1, &#39;XYZ&#39;: 0, &#39;Entendimiento&#39;: 3}},
+                &#39;dimensions&#39;: {&#39;Percepcion&#39;: -2, &#39;Procesamiento&#39;: -1, &#39;Recepcion&#39;: 0, &#39;Entendimiento&#39;: 3}},
             1: {&#39;features&#39;: {&#39;TiempoLecturaUserStory&#39;: 75, &#39;TiempoTrabajoUserStory&#39;: 125, &#39;ParticipacionesMeetings&#39;: 9,
                              &#39;Recurso&#39;: &#39;Texto&#39;, &#39;LineasCodigo&#39;: 73},
-                &#39;dimensions&#39;: {&#39;Percepcion&#39;: 2, &#39;Procesamiento&#39;: 0, &#39;XYZ&#39;: 0, &#39;Entendimiento&#39;: -1}},
+                &#39;dimensions&#39;: {&#39;Percepcion&#39;: 2, &#39;Procesamiento&#39;: 0, &#39;Recepcion&#39;: 0, &#39;Entendimiento&#39;: -1}},
             2: {&#39;features&#39;: {&#39;TiempoLecturaUserStory&#39;: 65, &#39;TiempoTrabajoUserStory&#39;: 146, &#39;ParticipacionesMeetings&#39;: 12,
                              &#39;Recurso&#39;: &#39;Imagen&#39;, &#39;LineasCodigo&#39;: 147},
-                &#39;dimensions&#39;: {&#39;Percepcion&#39;: 3, &#39;Procesamiento&#39;: 2, &#39;XYZ&#39;: 1, &#39;Entendimiento&#39;: -3}}}
+                &#39;dimensions&#39;: {&#39;Percepcion&#39;: 3, &#39;Procesamiento&#39;: 2, &#39;Recepcion&#39;: 1, &#39;Entendimiento&#39;: -3}}}
         &#34;&#34;&#34;
         instances = []
         [instances.append(i) for i in json.loads(request.json).values()]
-        return json.dumps(mediator.insert_instances(instances)), 200</code></pre>
+        return json.dumps(insert_instances(instances)), 200</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -246,35 +240,34 @@ class ModelUpdate(Resource):
 <p>JSON format required:
 {0: {'features': {'TiempoLecturaUserStory': 12, 'TiempoTrabajoUserStory': 31, 'ParticipacionesMeetings': 6,
 'Recurso': 'Texto', 'LineasCodigo': 45},
-'dimensions': {'Percepcion': -2, 'Procesamiento': -1, 'XYZ': 0, 'Entendimiento': 3}},
+'dimensions': {'Percepcion': -2, 'Procesamiento': -1, 'Recepcion': 0, 'Entendimiento': 3}},
 1: {'features': {'TiempoLecturaUserStory': 75, 'TiempoTrabajoUserStory': 125, 'ParticipacionesMeetings': 9,
 'Recurso': 'Texto', 'LineasCodigo': 73},
-'dimensions': {'Percepcion': 2, 'Procesamiento': 0, 'XYZ': 0, 'Entendimiento': -1}},
+'dimensions': {'Percepcion': 2, 'Procesamiento': 0, 'Recepcion': 0, 'Entendimiento': -1}},
 2: {'features': {'TiempoLecturaUserStory': 65, 'TiempoTrabajoUserStory': 146, 'ParticipacionesMeetings': 12,
 'Recurso': 'Imagen', 'LineasCodigo': 147},
-'dimensions': {'Percepcion': 3, 'Procesamiento': 2, 'XYZ': 1, 'Entendimiento': -3}}}</p></div>
+'dimensions': {'Percepcion': 3, 'Procesamiento': 2, 'Recepcion': 1, 'Entendimiento': -3}}}</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def put(self):
-    &#34;&#34;&#34;
-    Receives instances, persist them in the database and then retrains the model.
+    &#34;&#34;&#34;Receives instances, persist them in the database and then retrains the model.
 
     JSON format required:
         {0: {&#39;features&#39;: {&#39;TiempoLecturaUserStory&#39;: 12, &#39;TiempoTrabajoUserStory&#39;: 31, &#39;ParticipacionesMeetings&#39;: 6,
                  &#39;Recurso&#39;: &#39;Texto&#39;, &#39;LineasCodigo&#39;: 45},
-            &#39;dimensions&#39;: {&#39;Percepcion&#39;: -2, &#39;Procesamiento&#39;: -1, &#39;XYZ&#39;: 0, &#39;Entendimiento&#39;: 3}},
+            &#39;dimensions&#39;: {&#39;Percepcion&#39;: -2, &#39;Procesamiento&#39;: -1, &#39;Recepcion&#39;: 0, &#39;Entendimiento&#39;: 3}},
         1: {&#39;features&#39;: {&#39;TiempoLecturaUserStory&#39;: 75, &#39;TiempoTrabajoUserStory&#39;: 125, &#39;ParticipacionesMeetings&#39;: 9,
                          &#39;Recurso&#39;: &#39;Texto&#39;, &#39;LineasCodigo&#39;: 73},
-            &#39;dimensions&#39;: {&#39;Percepcion&#39;: 2, &#39;Procesamiento&#39;: 0, &#39;XYZ&#39;: 0, &#39;Entendimiento&#39;: -1}},
+            &#39;dimensions&#39;: {&#39;Percepcion&#39;: 2, &#39;Procesamiento&#39;: 0, &#39;Recepcion&#39;: 0, &#39;Entendimiento&#39;: -1}},
         2: {&#39;features&#39;: {&#39;TiempoLecturaUserStory&#39;: 65, &#39;TiempoTrabajoUserStory&#39;: 146, &#39;ParticipacionesMeetings&#39;: 12,
                          &#39;Recurso&#39;: &#39;Imagen&#39;, &#39;LineasCodigo&#39;: 147},
-            &#39;dimensions&#39;: {&#39;Percepcion&#39;: 3, &#39;Procesamiento&#39;: 2, &#39;XYZ&#39;: 1, &#39;Entendimiento&#39;: -3}}}
+            &#39;dimensions&#39;: {&#39;Percepcion&#39;: 3, &#39;Procesamiento&#39;: 2, &#39;Recepcion&#39;: 1, &#39;Entendimiento&#39;: -3}}}
     &#34;&#34;&#34;
     instances = []
     [instances.append(i) for i in json.loads(request.json).values()]
-    return json.dumps(mediator.insert_instances(instances)), 200</code></pre>
+    return json.dumps(insert_instances(instances)), 200</code></pre>
 </details>
 </dd>
 </dl>
@@ -293,10 +286,9 @@ class ModelUpdate(Resource):
     Resource for handling the processing of events by the app.
     &#34;&#34;&#34;
     def post(self):
+        &#34;&#34;&#34;Process the stored event data, generates instances througth them and then retrains the model with them.
         &#34;&#34;&#34;
-        Process the stored event data, generates instances througth them and then retrains the model with them.
-        &#34;&#34;&#34;
-        result = mediator.process_events()
+        result = process_events()
         print(result)
         return json.dumps(result[0]), result[1]</code></pre>
 </details>
@@ -325,10 +317,9 @@ class ModelUpdate(Resource):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def post(self):
+    &#34;&#34;&#34;Process the stored event data, generates instances througth them and then retrains the model with them.
     &#34;&#34;&#34;
-    Process the stored event data, generates instances througth them and then retrains the model with them.
-    &#34;&#34;&#34;
-    result = mediator.process_events()
+    result = process_events()
     print(result)
     return json.dumps(result[0]), result[1]</code></pre>
 </details>

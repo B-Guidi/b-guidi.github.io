@@ -33,10 +33,16 @@ from src.model.factors.level_calc_types.level_calculation import RangeCalculatio
 
 
 class NumericFactor(Factor):
-    &#34;&#34;&#34;
-    Factor whose value is calculated using average, and whose level selection is range based.
+    &#34;&#34;&#34;Factor whose value is calculated using average of ocurrences, and whose level selection is range based.
     &#34;&#34;&#34;
     def __init__(self, f_id, f_name, levels):
+        &#34;&#34;&#34;Constructor
+
+        Args:
+            f_id: an int that represents the id of the factor.
+            f_name: an str that represents the name of the factor.
+            levels: a list(int) that contains the levels of the factor.
+        &#34;&#34;&#34;
         super().__init__(f_id, f_name, levels, RangeCalculation())
         self.n_ocurrences = 0
         self.sum_values = 0
@@ -45,50 +51,55 @@ class NumericFactor(Factor):
         return super().__str__() + &#39;, levels={}, n={}, sum={}&#39;.format(self.levels, self.n_ocurrences, self.sum_values)
 
     def copy(self):
-        &#34;&#34;&#34;
-        Makes a clean copy of the factor.
+        &#34;&#34;&#34;Makes a clean copy of the factor.
 
-        :return: NumericFactor.
+        Returns:
+            a NumericFactor.
         &#34;&#34;&#34;
         return NumericFactor(self.id, self.name, self.levels)
 
     def is_valid_level_value(self, value):
-        &#34;&#34;&#34;
-        Checks if the given value is a valid level value.
+        &#34;&#34;&#34;Checks if the given value is a valid level value.
 
-        :param value: int. Value to validate.
-        :return: bool
+        Args:
+            value: an float, that contains the value to validate.
+
+        Returns:
+            a bool with the result of the validation.
         &#34;&#34;&#34;
         if value is np.NaN:
             return True
         return value &gt;= 0
 
     def is_valid_event_value(self, value):
-        &#34;&#34;&#34;
-        Checks if the event value is valid.
+        &#34;&#34;&#34;Checks if the given value is a valid event value.
 
-        :param value: int
-        :return: bool
+        Args:
+            value: a float, that contains the value to validate.
+
+        Returns:
+            a bool with the result of the validation.
         &#34;&#34;&#34;
         return self.is_valid_level_value(value)
 
     def format_level_value(self, value):
-        &#34;&#34;&#34;
-        Rounds the value to zero decimals.
+        &#34;&#34;&#34;Rounds the value to zero decimals.
 
-        :param value: float
-        :return: int
+        Args:
+            value: a float, that contains the value to format.
+
+        Returns:
+            an int with the formated value.
         &#34;&#34;&#34;
         formated = &#39;NaN&#39; if (value is np.NaN) else round(value)
         return formated
 
     def calculate(self):
-        &#34;&#34;&#34;
-        Calculates the level and the value for the factor. The responsability of the calculation is delegated to the
-            level calculation class.
+        &#34;&#34;&#34;Calculates the level and the value for the factor. The level is the value with most ocurrences.
 
-        :return: tuple(int, int) in case the n_ocurrences is not zero, or tuple(np.NaN, np.NaN) otherwise. The first
-            value is the factor level, and the second one is the factor value.
+        Returns:
+            a tuple(int, int) in case the n_ocurrences is not zero, or tuple(np.NaN, np.NaN) otherwise. The first
+                value is the factor level, and the second one is the factor value.
         &#34;&#34;&#34;
         if self.n_ocurrences == 0:
             return np.NaN, np.NaN
@@ -97,11 +108,13 @@ class NumericFactor(Factor):
                    round(self.sum_values/self.n_ocurrences)
 
     def add_new_ocurrence(self, new_value):
-        &#34;&#34;&#34;
-        Increases the number of ocurrences for the factor by one, and then adds the new value to the temporal sum.
+        &#34;&#34;&#34;Increases the number of ocurrences for the factor by one, and then adds the new value to the temporal sum.
 
-        :param new_value: float
-        :return: None
+        Args:
+            new_value: a float that contains the value of the event.
+
+        Returns:
+            None
         &#34;&#34;&#34;
         self.n_ocurrences += 1
         self.sum_values += new_value</code></pre>
@@ -121,16 +134,32 @@ class NumericFactor(Factor):
 <span>(</span><span>f_id, f_name, levels)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Factor whose value is calculated using average, and whose level selection is range based.</p></div>
+<div class="desc"><p>Factor whose value is calculated using average of ocurrences, and whose level selection is range based.</p>
+<p>Constructor</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>f_id</code></strong></dt>
+<dd>an int that represents the id of the factor.</dd>
+<dt><strong><code>f_name</code></strong></dt>
+<dd>an str that represents the name of the factor.</dd>
+<dt><strong><code>levels</code></strong></dt>
+<dd>a list(int) that contains the levels of the factor.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class NumericFactor(Factor):
-    &#34;&#34;&#34;
-    Factor whose value is calculated using average, and whose level selection is range based.
+    &#34;&#34;&#34;Factor whose value is calculated using average of ocurrences, and whose level selection is range based.
     &#34;&#34;&#34;
     def __init__(self, f_id, f_name, levels):
+        &#34;&#34;&#34;Constructor
+
+        Args:
+            f_id: an int that represents the id of the factor.
+            f_name: an str that represents the name of the factor.
+            levels: a list(int) that contains the levels of the factor.
+        &#34;&#34;&#34;
         super().__init__(f_id, f_name, levels, RangeCalculation())
         self.n_ocurrences = 0
         self.sum_values = 0
@@ -139,50 +168,55 @@ class NumericFactor(Factor):
         return super().__str__() + &#39;, levels={}, n={}, sum={}&#39;.format(self.levels, self.n_ocurrences, self.sum_values)
 
     def copy(self):
-        &#34;&#34;&#34;
-        Makes a clean copy of the factor.
+        &#34;&#34;&#34;Makes a clean copy of the factor.
 
-        :return: NumericFactor.
+        Returns:
+            a NumericFactor.
         &#34;&#34;&#34;
         return NumericFactor(self.id, self.name, self.levels)
 
     def is_valid_level_value(self, value):
-        &#34;&#34;&#34;
-        Checks if the given value is a valid level value.
+        &#34;&#34;&#34;Checks if the given value is a valid level value.
 
-        :param value: int. Value to validate.
-        :return: bool
+        Args:
+            value: an float, that contains the value to validate.
+
+        Returns:
+            a bool with the result of the validation.
         &#34;&#34;&#34;
         if value is np.NaN:
             return True
         return value &gt;= 0
 
     def is_valid_event_value(self, value):
-        &#34;&#34;&#34;
-        Checks if the event value is valid.
+        &#34;&#34;&#34;Checks if the given value is a valid event value.
 
-        :param value: int
-        :return: bool
+        Args:
+            value: a float, that contains the value to validate.
+
+        Returns:
+            a bool with the result of the validation.
         &#34;&#34;&#34;
         return self.is_valid_level_value(value)
 
     def format_level_value(self, value):
-        &#34;&#34;&#34;
-        Rounds the value to zero decimals.
+        &#34;&#34;&#34;Rounds the value to zero decimals.
 
-        :param value: float
-        :return: int
+        Args:
+            value: a float, that contains the value to format.
+
+        Returns:
+            an int with the formated value.
         &#34;&#34;&#34;
         formated = &#39;NaN&#39; if (value is np.NaN) else round(value)
         return formated
 
     def calculate(self):
-        &#34;&#34;&#34;
-        Calculates the level and the value for the factor. The responsability of the calculation is delegated to the
-            level calculation class.
+        &#34;&#34;&#34;Calculates the level and the value for the factor. The level is the value with most ocurrences.
 
-        :return: tuple(int, int) in case the n_ocurrences is not zero, or tuple(np.NaN, np.NaN) otherwise. The first
-            value is the factor level, and the second one is the factor value.
+        Returns:
+            a tuple(int, int) in case the n_ocurrences is not zero, or tuple(np.NaN, np.NaN) otherwise. The first
+                value is the factor level, and the second one is the factor value.
         &#34;&#34;&#34;
         if self.n_ocurrences == 0:
             return np.NaN, np.NaN
@@ -191,11 +225,13 @@ class NumericFactor(Factor):
                    round(self.sum_values/self.n_ocurrences)
 
     def add_new_ocurrence(self, new_value):
-        &#34;&#34;&#34;
-        Increases the number of ocurrences for the factor by one, and then adds the new value to the temporal sum.
+        &#34;&#34;&#34;Increases the number of ocurrences for the factor by one, and then adds the new value to the temporal sum.
 
-        :param new_value: float
-        :return: None
+        Args:
+            new_value: a float that contains the value of the event.
+
+        Returns:
+            None
         &#34;&#34;&#34;
         self.n_ocurrences += 1
         self.sum_values += new_value</code></pre>
@@ -211,18 +247,25 @@ class NumericFactor(Factor):
 </code></dt>
 <dd>
 <div class="desc"><p>Increases the number of ocurrences for the factor by one, and then adds the new value to the temporal sum.</p>
-<p>:param new_value: float
-:return: None</p></div>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>new_value</code></strong></dt>
+<dd>a float that contains the value of the event.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def add_new_ocurrence(self, new_value):
-    &#34;&#34;&#34;
-    Increases the number of ocurrences for the factor by one, and then adds the new value to the temporal sum.
+    &#34;&#34;&#34;Increases the number of ocurrences for the factor by one, and then adds the new value to the temporal sum.
 
-    :param new_value: float
-    :return: None
+    Args:
+        new_value: a float that contains the value of the event.
+
+    Returns:
+        None
     &#34;&#34;&#34;
     self.n_ocurrences += 1
     self.sum_values += new_value</code></pre>
@@ -232,21 +275,20 @@ class NumericFactor(Factor):
 <span>def <span class="ident">calculate</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Calculates the level and the value for the factor. The responsability of the calculation is delegated to the
-level calculation class.</p>
-<p>:return: tuple(int, int) in case the n_ocurrences is not zero, or tuple(np.NaN, np.NaN) otherwise. The first
+<div class="desc"><p>Calculates the level and the value for the factor. The level is the value with most ocurrences.</p>
+<h2 id="returns">Returns</h2>
+<p>a tuple(int, int) in case the n_ocurrences is not zero, or tuple(np.NaN, np.NaN) otherwise. The first
 value is the factor level, and the second one is the factor value.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def calculate(self):
-    &#34;&#34;&#34;
-    Calculates the level and the value for the factor. The responsability of the calculation is delegated to the
-        level calculation class.
+    &#34;&#34;&#34;Calculates the level and the value for the factor. The level is the value with most ocurrences.
 
-    :return: tuple(int, int) in case the n_ocurrences is not zero, or tuple(np.NaN, np.NaN) otherwise. The first
-        value is the factor level, and the second one is the factor value.
+    Returns:
+        a tuple(int, int) in case the n_ocurrences is not zero, or tuple(np.NaN, np.NaN) otherwise. The first
+            value is the factor level, and the second one is the factor value.
     &#34;&#34;&#34;
     if self.n_ocurrences == 0:
         return np.NaN, np.NaN
@@ -260,16 +302,17 @@ value is the factor level, and the second one is the factor value.</p></div>
 </code></dt>
 <dd>
 <div class="desc"><p>Makes a clean copy of the factor.</p>
-<p>:return: NumericFactor.</p></div>
+<h2 id="returns">Returns</h2>
+<p>a NumericFactor.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def copy(self):
-    &#34;&#34;&#34;
-    Makes a clean copy of the factor.
+    &#34;&#34;&#34;Makes a clean copy of the factor.
 
-    :return: NumericFactor.
+    Returns:
+        a NumericFactor.
     &#34;&#34;&#34;
     return NumericFactor(self.id, self.name, self.levels)</code></pre>
 </details>
@@ -279,18 +322,25 @@ value is the factor level, and the second one is the factor value.</p></div>
 </code></dt>
 <dd>
 <div class="desc"><p>Rounds the value to zero decimals.</p>
-<p>:param value: float
-:return: int</p></div>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>value</code></strong></dt>
+<dd>a float, that contains the value to format.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>an int with the formated value.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def format_level_value(self, value):
-    &#34;&#34;&#34;
-    Rounds the value to zero decimals.
+    &#34;&#34;&#34;Rounds the value to zero decimals.
 
-    :param value: float
-    :return: int
+    Args:
+        value: a float, that contains the value to format.
+
+    Returns:
+        an int with the formated value.
     &#34;&#34;&#34;
     formated = &#39;NaN&#39; if (value is np.NaN) else round(value)
     return formated</code></pre>
@@ -300,19 +350,26 @@ value is the factor level, and the second one is the factor value.</p></div>
 <span>def <span class="ident">is_valid_event_value</span></span>(<span>self, value)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Checks if the event value is valid.</p>
-<p>:param value: int
-:return: bool</p></div>
+<div class="desc"><p>Checks if the given value is a valid event value.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>value</code></strong></dt>
+<dd>a float, that contains the value to validate.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>a bool with the result of the validation.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def is_valid_event_value(self, value):
-    &#34;&#34;&#34;
-    Checks if the event value is valid.
+    &#34;&#34;&#34;Checks if the given value is a valid event value.
 
-    :param value: int
-    :return: bool
+    Args:
+        value: a float, that contains the value to validate.
+
+    Returns:
+        a bool with the result of the validation.
     &#34;&#34;&#34;
     return self.is_valid_level_value(value)</code></pre>
 </details>
@@ -322,18 +379,25 @@ value is the factor level, and the second one is the factor value.</p></div>
 </code></dt>
 <dd>
 <div class="desc"><p>Checks if the given value is a valid level value.</p>
-<p>:param value: int. Value to validate.
-:return: bool</p></div>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>value</code></strong></dt>
+<dd>an float, that contains the value to validate.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>a bool with the result of the validation.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def is_valid_level_value(self, value):
-    &#34;&#34;&#34;
-    Checks if the given value is a valid level value.
+    &#34;&#34;&#34;Checks if the given value is a valid level value.
 
-    :param value: int. Value to validate.
-    :return: bool
+    Args:
+        value: an float, that contains the value to validate.
+
+    Returns:
+        a bool with the result of the validation.
     &#34;&#34;&#34;
     if value is np.NaN:
         return True

@@ -36,16 +36,15 @@ from src.model.factors import get_factor_name, get_cardinality
 
 
 class BayesianNetwork:
-    &#34;&#34;&#34;
-    Bayesian network builded over BayesianModel class provided by pgmpy framework.
+    &#34;&#34;&#34;Bayesian network builded on top of BayesianModel class provided by pgmpy framework.
     &#34;&#34;&#34;
 
     def __init__(self, edges):
-        &#34;&#34;&#34;
-        Initialize a Bayesian Network.
+        &#34;&#34;&#34;Initialize a Bayesian Network.
 
-        :param edges: list(tuple(int, int)), where the first element of the tuple isa f, and the second one is a
-            dimension. Each tuple represents the influence of a f over a dimension.
+        Args:
+            edges: a list(tuple(int, int)), where the first element of the tuple is a factor, and the second one is a
+                dimension. Each tuple represents the influence of a factor over a dimension.
         &#34;&#34;&#34;
         n_edges = []
         [n_edges.append((get_factor_name(f_id), d_handl.get_dimension_name(d_id))) for f_id, d_id in edges]
@@ -92,15 +91,17 @@ class BayesianNetwork:
             print(&#34;Model correctly initialized&#34;)
 
     def fit(self, existing_instances, print_data=False):
-        &#34;&#34;&#34;
-        Formats the given data into a pandas DataFrame, and then fits the model with it.
+        &#34;&#34;&#34;Formats the given data into a pandas DataFrame, and then fits the model with it.
 
-        :param existing_instances: dict(str,list(int)), where k is the name of a f or dimension in the model, and
-            v is a list of values for it. If a node is in the model but not in the dict, then the corresponding column
-            will be filled with numpy.NaN.
-        :param print_data: bool that indicates if the pandas DataFrame will be printed or not. False by defaul
-        :return: None
-        :raises: ValueError if the lists in the given data do not have the same length.
+        Args:
+            existing_instances: dict(str,list(int)), where k is the name of a factor or dimension in the model, and
+                v is a list of values for it. If a node is in the model but not in the dict, then the corresponding
+                column will be filled with numpy.NaN.
+            print_data: bool that indicates if the pandas DataFrame will be printed or not. False by default.
+        Returns:
+            None
+        Raises:
+            ValueError if the lists in the given data do not have the same length.
         &#34;&#34;&#34;
         try:
             existing_instances = pd.concat([pd.DataFrame(data=existing_instances)], ignore_index=True)
@@ -115,13 +116,15 @@ class BayesianNetwork:
             raise ValueError(&#34;All the lists must have the same length ({}).&#34;.format(str(length_l)))
 
     def infer_dimension(self, dimension, named_feats):
-        &#34;&#34;&#34;
-        Infers the dimension taking into account the factors level. The level with maximum probability is the choosen.
+        &#34;&#34;&#34;Infers the dimension taking into account the factors level. The choosen one is the level with maximum
+        probability of ocurrence.
 
-        :param dimension: str that represents the dimension that is going to be infered.
-        :param named_feats: dict(str, int) that contains features used to infer the dimension, and their levels.
-        :return: a tuple(int, float), where the first element is the inferred level dimension, and the second is the
-            probability for it.
+        Args:
+            dimension: a str that represents the dimension that is going to be infered.
+            named_feats: a dict(str, int) that contains features used to infer the dimension, and their levels.
+        Returns:
+            a tuple(int, float), where the first element is the inferred level dimension, and the second is the
+                probability for it.
         &#34;&#34;&#34;
         model_infer = VariableElimination(self.model)
 
@@ -136,12 +139,13 @@ class BayesianNetwork:
         return max_i, round(max_p, 3)
 
     def infer_dimensions(self, dimensions, named_features):
-        &#34;&#34;&#34;
-        Infers the levels for all the given dimensions.
+        &#34;&#34;&#34;Infers the levels for all the given dimensions.
 
-        :param dimensions: list(str) with the dimensions that are going to be inferred.
-        :param named_features: dict(str, int) that contains features used to infer the dimension, and their levels.
-        :return: a dict(str, int), where k is the name of the dimension, and v is his level.
+        Args:
+            dimensions: a list(str) with the dimensions that are going to be inferred.
+            named_features: a dict(str, int) that contains features used to infer the dimension, and their levels.
+        Returns:
+            a dict(str, int), where k is the name of the dimension, and v is the corresponding level.
         &#34;&#34;&#34;
         inference = {}
         for d in dimensions:
@@ -163,25 +167,28 @@ class BayesianNetwork:
 <span>(</span><span>edges)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Bayesian network builded over BayesianModel class provided by pgmpy framework.</p>
+<div class="desc"><p>Bayesian network builded on top of BayesianModel class provided by pgmpy framework.</p>
 <p>Initialize a Bayesian Network.</p>
-<p>:param edges: list(tuple(int, int)), where the first element of the tuple isa f, and the second one is a
-dimension. Each tuple represents the influence of a f over a dimension.</p></div>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>edges</code></strong></dt>
+<dd>a list(tuple(int, int)), where the first element of the tuple is a factor, and the second one is a
+dimension. Each tuple represents the influence of a factor over a dimension.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class BayesianNetwork:
-    &#34;&#34;&#34;
-    Bayesian network builded over BayesianModel class provided by pgmpy framework.
+    &#34;&#34;&#34;Bayesian network builded on top of BayesianModel class provided by pgmpy framework.
     &#34;&#34;&#34;
 
     def __init__(self, edges):
-        &#34;&#34;&#34;
-        Initialize a Bayesian Network.
+        &#34;&#34;&#34;Initialize a Bayesian Network.
 
-        :param edges: list(tuple(int, int)), where the first element of the tuple isa f, and the second one is a
-            dimension. Each tuple represents the influence of a f over a dimension.
+        Args:
+            edges: a list(tuple(int, int)), where the first element of the tuple is a factor, and the second one is a
+                dimension. Each tuple represents the influence of a factor over a dimension.
         &#34;&#34;&#34;
         n_edges = []
         [n_edges.append((get_factor_name(f_id), d_handl.get_dimension_name(d_id))) for f_id, d_id in edges]
@@ -228,15 +235,17 @@ dimension. Each tuple represents the influence of a f over a dimension.</p></div
             print(&#34;Model correctly initialized&#34;)
 
     def fit(self, existing_instances, print_data=False):
-        &#34;&#34;&#34;
-        Formats the given data into a pandas DataFrame, and then fits the model with it.
+        &#34;&#34;&#34;Formats the given data into a pandas DataFrame, and then fits the model with it.
 
-        :param existing_instances: dict(str,list(int)), where k is the name of a f or dimension in the model, and
-            v is a list of values for it. If a node is in the model but not in the dict, then the corresponding column
-            will be filled with numpy.NaN.
-        :param print_data: bool that indicates if the pandas DataFrame will be printed or not. False by defaul
-        :return: None
-        :raises: ValueError if the lists in the given data do not have the same length.
+        Args:
+            existing_instances: dict(str,list(int)), where k is the name of a factor or dimension in the model, and
+                v is a list of values for it. If a node is in the model but not in the dict, then the corresponding
+                column will be filled with numpy.NaN.
+            print_data: bool that indicates if the pandas DataFrame will be printed or not. False by default.
+        Returns:
+            None
+        Raises:
+            ValueError if the lists in the given data do not have the same length.
         &#34;&#34;&#34;
         try:
             existing_instances = pd.concat([pd.DataFrame(data=existing_instances)], ignore_index=True)
@@ -251,13 +260,15 @@ dimension. Each tuple represents the influence of a f over a dimension.</p></div
             raise ValueError(&#34;All the lists must have the same length ({}).&#34;.format(str(length_l)))
 
     def infer_dimension(self, dimension, named_feats):
-        &#34;&#34;&#34;
-        Infers the dimension taking into account the factors level. The level with maximum probability is the choosen.
+        &#34;&#34;&#34;Infers the dimension taking into account the factors level. The choosen one is the level with maximum
+        probability of ocurrence.
 
-        :param dimension: str that represents the dimension that is going to be infered.
-        :param named_feats: dict(str, int) that contains features used to infer the dimension, and their levels.
-        :return: a tuple(int, float), where the first element is the inferred level dimension, and the second is the
-            probability for it.
+        Args:
+            dimension: a str that represents the dimension that is going to be infered.
+            named_feats: a dict(str, int) that contains features used to infer the dimension, and their levels.
+        Returns:
+            a tuple(int, float), where the first element is the inferred level dimension, and the second is the
+                probability for it.
         &#34;&#34;&#34;
         model_infer = VariableElimination(self.model)
 
@@ -272,12 +283,13 @@ dimension. Each tuple represents the influence of a f over a dimension.</p></div
         return max_i, round(max_p, 3)
 
     def infer_dimensions(self, dimensions, named_features):
-        &#34;&#34;&#34;
-        Infers the levels for all the given dimensions.
+        &#34;&#34;&#34;Infers the levels for all the given dimensions.
 
-        :param dimensions: list(str) with the dimensions that are going to be inferred.
-        :param named_features: dict(str, int) that contains features used to infer the dimension, and their levels.
-        :return: a dict(str, int), where k is the name of the dimension, and v is his level.
+        Args:
+            dimensions: a list(str) with the dimensions that are going to be inferred.
+            named_features: a dict(str, int) that contains features used to infer the dimension, and their levels.
+        Returns:
+            a dict(str, int), where k is the name of the dimension, and v is the corresponding level.
         &#34;&#34;&#34;
         inference = {}
         for d in dimensions:
@@ -291,26 +303,35 @@ dimension. Each tuple represents the influence of a f over a dimension.</p></div
 </code></dt>
 <dd>
 <div class="desc"><p>Formats the given data into a pandas DataFrame, and then fits the model with it.</p>
-<p>:param existing_instances: dict(str,list(int)), where k is the name of a f or dimension in the model, and
-v is a list of values for it. If a node is in the model but not in the dict, then the corresponding column
-will be filled with numpy.NaN.
-:param print_data: bool that indicates if the pandas DataFrame will be printed or not. False by defaul
-:return: None
-:raises: ValueError if the lists in the given data do not have the same length.</p></div>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>existing_instances</code></strong></dt>
+<dd>dict(str,list(int)), where k is the name of a factor or dimension in the model, and
+v is a list of values for it. If a node is in the model but not in the dict, then the corresponding
+column will be filled with numpy.NaN.</dd>
+<dt><strong><code>print_data</code></strong></dt>
+<dd>bool that indicates if the pandas DataFrame will be printed or not. False by default.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None</p>
+<h2 id="raises">Raises</h2>
+<p>ValueError if the lists in the given data do not have the same length.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def fit(self, existing_instances, print_data=False):
-    &#34;&#34;&#34;
-    Formats the given data into a pandas DataFrame, and then fits the model with it.
+    &#34;&#34;&#34;Formats the given data into a pandas DataFrame, and then fits the model with it.
 
-    :param existing_instances: dict(str,list(int)), where k is the name of a f or dimension in the model, and
-        v is a list of values for it. If a node is in the model but not in the dict, then the corresponding column
-        will be filled with numpy.NaN.
-    :param print_data: bool that indicates if the pandas DataFrame will be printed or not. False by defaul
-    :return: None
-    :raises: ValueError if the lists in the given data do not have the same length.
+    Args:
+        existing_instances: dict(str,list(int)), where k is the name of a factor or dimension in the model, and
+            v is a list of values for it. If a node is in the model but not in the dict, then the corresponding
+            column will be filled with numpy.NaN.
+        print_data: bool that indicates if the pandas DataFrame will be printed or not. False by default.
+    Returns:
+        None
+    Raises:
+        ValueError if the lists in the given data do not have the same length.
     &#34;&#34;&#34;
     try:
         existing_instances = pd.concat([pd.DataFrame(data=existing_instances)], ignore_index=True)
@@ -329,23 +350,32 @@ will be filled with numpy.NaN.
 <span>def <span class="ident">infer_dimension</span></span>(<span>self, dimension, named_feats)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Infers the dimension taking into account the factors level. The level with maximum probability is the choosen.</p>
-<p>:param dimension: str that represents the dimension that is going to be infered.
-:param named_feats: dict(str, int) that contains features used to infer the dimension, and their levels.
-:return: a tuple(int, float), where the first element is the inferred level dimension, and the second is the
+<div class="desc"><p>Infers the dimension taking into account the factors level. The choosen one is the level with maximum
+probability of ocurrence.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>dimension</code></strong></dt>
+<dd>a str that represents the dimension that is going to be infered.</dd>
+<dt><strong><code>named_feats</code></strong></dt>
+<dd>a dict(str, int) that contains features used to infer the dimension, and their levels.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>a tuple(int, float), where the first element is the inferred level dimension, and the second is the
 probability for it.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def infer_dimension(self, dimension, named_feats):
-    &#34;&#34;&#34;
-    Infers the dimension taking into account the factors level. The level with maximum probability is the choosen.
+    &#34;&#34;&#34;Infers the dimension taking into account the factors level. The choosen one is the level with maximum
+    probability of ocurrence.
 
-    :param dimension: str that represents the dimension that is going to be infered.
-    :param named_feats: dict(str, int) that contains features used to infer the dimension, and their levels.
-    :return: a tuple(int, float), where the first element is the inferred level dimension, and the second is the
-        probability for it.
+    Args:
+        dimension: a str that represents the dimension that is going to be infered.
+        named_feats: a dict(str, int) that contains features used to infer the dimension, and their levels.
+    Returns:
+        a tuple(int, float), where the first element is the inferred level dimension, and the second is the
+            probability for it.
     &#34;&#34;&#34;
     model_infer = VariableElimination(self.model)
 
@@ -365,20 +395,27 @@ probability for it.</p></div>
 </code></dt>
 <dd>
 <div class="desc"><p>Infers the levels for all the given dimensions.</p>
-<p>:param dimensions: list(str) with the dimensions that are going to be inferred.
-:param named_features: dict(str, int) that contains features used to infer the dimension, and their levels.
-:return: a dict(str, int), where k is the name of the dimension, and v is his level.</p></div>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>dimensions</code></strong></dt>
+<dd>a list(str) with the dimensions that are going to be inferred.</dd>
+<dt><strong><code>named_features</code></strong></dt>
+<dd>a dict(str, int) that contains features used to infer the dimension, and their levels.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>a dict(str, int), where k is the name of the dimension, and v is the corresponding level.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def infer_dimensions(self, dimensions, named_features):
-    &#34;&#34;&#34;
-    Infers the levels for all the given dimensions.
+    &#34;&#34;&#34;Infers the levels for all the given dimensions.
 
-    :param dimensions: list(str) with the dimensions that are going to be inferred.
-    :param named_features: dict(str, int) that contains features used to infer the dimension, and their levels.
-    :return: a dict(str, int), where k is the name of the dimension, and v is his level.
+    Args:
+        dimensions: a list(str) with the dimensions that are going to be inferred.
+        named_features: a dict(str, int) that contains features used to infer the dimension, and their levels.
+    Returns:
+        a dict(str, int), where k is the name of the dimension, and v is the corresponding level.
     &#34;&#34;&#34;
     inference = {}
     for d in dimensions:

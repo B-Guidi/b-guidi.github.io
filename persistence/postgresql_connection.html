@@ -38,23 +38,27 @@ from src.persistence.database_connection import DatabaseConnection
 
 
 class PostgreSQLConnection(DatabaseConnection):
-    &#34;&#34;&#34;
-    DatabaseConnection implementation for PostgreSQL database.
+    &#34;&#34;&#34;DatabaseConnection implementation for PostgreSQL database.
     &#34;&#34;&#34;
     def __init__(self, is_local):
+        &#34;&#34;&#34;Constructor.
+
+        Args:
+            is_local: a bool that determines wheter the database runs locally or remotelly.
+        &#34;&#34;&#34;
         if is_local:
             self.conn = psycopg2.connect(&#34;dbname=profile_gen_db user=postgres&#34;)
         else:
             self.conn = psycopg2.connect(os.environ[&#39;DATABASE_URL&#39;], sslmode=&#39;require&#39;)
 
     def insert_instances(self, instances, levels_calculated):
-        &#34;&#34;&#34;
-        Inserts the given instances in the database.
+        &#34;&#34;&#34;Inserts the given instances in the database.
 
-        :param instances: list(Instance) that contains the instances to insert in the database.
-        :param levels_calculated: boolean that determines wheter or not the levels for features where previously
-            calculated.
-        :return: None
+        Args:
+            instances: a list(Instance) that contains the instances to insert in the database.
+            levels_calculated: a bool that determines wheter or not the levels for features where previously calculated.
+        Returns:
+            None
         &#34;&#34;&#34;
         with self.conn.cursor() as cursor:
             query = &#39;INSERT INTO instance(features, dimensions) VALUES (%s, %s)&#39;
@@ -62,11 +66,11 @@ class PostgreSQLConnection(DatabaseConnection):
             self.conn.commit()
 
     def query_instances(self):
-        &#34;&#34;&#34;
-        Queries the existing instances in the database.
+        &#34;&#34;&#34;Queries the existing instances in the database.
 
-        :return: dict(str, list(int)), where k is the name of a factor or dimension in the model, and v is a list of
-         values for it.
+        Returns:
+            a dict(str, list(int)), where k is the name of a factor or dimension in the model, and v is a list of values
+                for it.
         &#34;&#34;&#34;
         cursor = self.conn.cursor()
         cursor.execute(&#39;SELECT * FROM instance&#39;)
@@ -83,11 +87,12 @@ class PostgreSQLConnection(DatabaseConnection):
         return {**feat_dict, **dim_dict}
 
     def insert_events(self, events):
-        &#34;&#34;&#34;
-        Inserts the given events in the database.
+        &#34;&#34;&#34;Inserts the given events in the database.
 
-        :param events: list({&#39;user_id&#39;: int, &#39;factor_id&#39;: int, &#39;value&#39;: Any}) with events to insert in the database.
-        :return: None
+        Args:
+            events: a list({&#39;user_id&#39;: int, &#39;factor_id&#39;: int, &#39;value&#39;: Any}) with events to insert in the database.
+        Returns:
+            None
         &#34;&#34;&#34;
         formated_events = []
         [formated_events.append(json.dumps(e)) for e in events]
@@ -101,11 +106,11 @@ class PostgreSQLConnection(DatabaseConnection):
         return len(events)
 
     def query_events(self):
-        &#34;&#34;&#34;
-        Queries the existing events in the database.
+        &#34;&#34;&#34;Queries the existing events in the database.
 
-        :return: list({&#39;user_id&#39;: int, &#39;factor_id&#39;: int, &#39;value&#39;: Any}) that contains all the events stored in the
-            database.
+        Returns:
+            a list({&#39;user_id&#39;: int, &#39;factor_id&#39;: int, &#39;value&#39;: Any}) that contains all the events stored in the
+                database.
         &#34;&#34;&#34;
         cursor = self.conn.cursor()
         cursor.execute(&#39;SELECT event_info FROM event&#39;)
@@ -116,10 +121,10 @@ class PostgreSQLConnection(DatabaseConnection):
         return query_result
 
     def delete_existing_events(self):
-        &#34;&#34;&#34;
-        Deletes all the existing events in the database.
+        &#34;&#34;&#34;Deletes all the existing events in the database.
 
-        :return: None
+        Returns:
+            None
         &#34;&#34;&#34;
         cursor = self.conn.cursor()
         cursor.execute(&#39;DELETE FROM event&#39;)
@@ -140,29 +145,39 @@ class PostgreSQLConnection(DatabaseConnection):
 <span>(</span><span>is_local)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>DatabaseConnection implementation for PostgreSQL database.</p></div>
+<div class="desc"><p>DatabaseConnection implementation for PostgreSQL database.</p>
+<p>Constructor.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>is_local</code></strong></dt>
+<dd>a bool that determines wheter the database runs locally or remotelly.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class PostgreSQLConnection(DatabaseConnection):
-    &#34;&#34;&#34;
-    DatabaseConnection implementation for PostgreSQL database.
+    &#34;&#34;&#34;DatabaseConnection implementation for PostgreSQL database.
     &#34;&#34;&#34;
     def __init__(self, is_local):
+        &#34;&#34;&#34;Constructor.
+
+        Args:
+            is_local: a bool that determines wheter the database runs locally or remotelly.
+        &#34;&#34;&#34;
         if is_local:
             self.conn = psycopg2.connect(&#34;dbname=profile_gen_db user=postgres&#34;)
         else:
             self.conn = psycopg2.connect(os.environ[&#39;DATABASE_URL&#39;], sslmode=&#39;require&#39;)
 
     def insert_instances(self, instances, levels_calculated):
-        &#34;&#34;&#34;
-        Inserts the given instances in the database.
+        &#34;&#34;&#34;Inserts the given instances in the database.
 
-        :param instances: list(Instance) that contains the instances to insert in the database.
-        :param levels_calculated: boolean that determines wheter or not the levels for features where previously
-            calculated.
-        :return: None
+        Args:
+            instances: a list(Instance) that contains the instances to insert in the database.
+            levels_calculated: a bool that determines wheter or not the levels for features where previously calculated.
+        Returns:
+            None
         &#34;&#34;&#34;
         with self.conn.cursor() as cursor:
             query = &#39;INSERT INTO instance(features, dimensions) VALUES (%s, %s)&#39;
@@ -170,11 +185,11 @@ class PostgreSQLConnection(DatabaseConnection):
             self.conn.commit()
 
     def query_instances(self):
-        &#34;&#34;&#34;
-        Queries the existing instances in the database.
+        &#34;&#34;&#34;Queries the existing instances in the database.
 
-        :return: dict(str, list(int)), where k is the name of a factor or dimension in the model, and v is a list of
-         values for it.
+        Returns:
+            a dict(str, list(int)), where k is the name of a factor or dimension in the model, and v is a list of values
+                for it.
         &#34;&#34;&#34;
         cursor = self.conn.cursor()
         cursor.execute(&#39;SELECT * FROM instance&#39;)
@@ -191,11 +206,12 @@ class PostgreSQLConnection(DatabaseConnection):
         return {**feat_dict, **dim_dict}
 
     def insert_events(self, events):
-        &#34;&#34;&#34;
-        Inserts the given events in the database.
+        &#34;&#34;&#34;Inserts the given events in the database.
 
-        :param events: list({&#39;user_id&#39;: int, &#39;factor_id&#39;: int, &#39;value&#39;: Any}) with events to insert in the database.
-        :return: None
+        Args:
+            events: a list({&#39;user_id&#39;: int, &#39;factor_id&#39;: int, &#39;value&#39;: Any}) with events to insert in the database.
+        Returns:
+            None
         &#34;&#34;&#34;
         formated_events = []
         [formated_events.append(json.dumps(e)) for e in events]
@@ -209,11 +225,11 @@ class PostgreSQLConnection(DatabaseConnection):
         return len(events)
 
     def query_events(self):
-        &#34;&#34;&#34;
-        Queries the existing events in the database.
+        &#34;&#34;&#34;Queries the existing events in the database.
 
-        :return: list({&#39;user_id&#39;: int, &#39;factor_id&#39;: int, &#39;value&#39;: Any}) that contains all the events stored in the
-            database.
+        Returns:
+            a list({&#39;user_id&#39;: int, &#39;factor_id&#39;: int, &#39;value&#39;: Any}) that contains all the events stored in the
+                database.
         &#34;&#34;&#34;
         cursor = self.conn.cursor()
         cursor.execute(&#39;SELECT event_info FROM event&#39;)
@@ -224,10 +240,10 @@ class PostgreSQLConnection(DatabaseConnection):
         return query_result
 
     def delete_existing_events(self):
-        &#34;&#34;&#34;
-        Deletes all the existing events in the database.
+        &#34;&#34;&#34;Deletes all the existing events in the database.
 
-        :return: None
+        Returns:
+            None
         &#34;&#34;&#34;
         cursor = self.conn.cursor()
         cursor.execute(&#39;DELETE FROM event&#39;)
@@ -237,42 +253,6 @@ class PostgreSQLConnection(DatabaseConnection):
 <ul class="hlist">
 <li><a title="src.persistence.database_connection.DatabaseConnection" href="database_connection.html#src.persistence.database_connection.DatabaseConnection">DatabaseConnection</a></li>
 </ul>
-<h3>Methods</h3>
-<dl>
-<dt id="src.persistence.postgresql_connection.PostgreSQLConnection.query_instances"><code class="name flex">
-<span>def <span class="ident">query_instances</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Queries the existing instances in the database.</p>
-<p>:return: dict(str, list(int)), where k is the name of a factor or dimension in the model, and v is a list of
-values for it.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def query_instances(self):
-    &#34;&#34;&#34;
-    Queries the existing instances in the database.
-
-    :return: dict(str, list(int)), where k is the name of a factor or dimension in the model, and v is a list of
-     values for it.
-    &#34;&#34;&#34;
-    cursor = self.conn.cursor()
-    cursor.execute(&#39;SELECT * FROM instance&#39;)
-
-    feat_dict = init_factors_matrix()  # The cols of the matrix are the dict keys (f names). The rows are instances.
-    dim_dict = d_handl.copy_all_names()
-
-    for i in cursor.fetchall():
-        for f_name, f_vals in feat_dict.items():
-            level = np.NaN if i[1][f_name] == &#39;NaN&#39; else get_level(f_name, i[1][f_name])  # i[1] contains features.
-            f_vals.append(level)
-        [d_vals.append(i[2][d_name]) for d_name, d_vals in dim_dict.items()]  # i[2] contains dimensions.
-
-    return {**feat_dict, **dim_dict}</code></pre>
-</details>
-</dd>
-</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="src.persistence.database_connection.DatabaseConnection" href="database_connection.html#src.persistence.database_connection.DatabaseConnection">DatabaseConnection</a></b></code>:
@@ -281,6 +261,7 @@ values for it.</p></div>
 <li><code><a title="src.persistence.database_connection.DatabaseConnection.insert_events" href="database_connection.html#src.persistence.database_connection.DatabaseConnection.insert_events">insert_events</a></code></li>
 <li><code><a title="src.persistence.database_connection.DatabaseConnection.insert_instances" href="database_connection.html#src.persistence.database_connection.DatabaseConnection.insert_instances">insert_instances</a></code></li>
 <li><code><a title="src.persistence.database_connection.DatabaseConnection.query_events" href="database_connection.html#src.persistence.database_connection.DatabaseConnection.query_events">query_events</a></code></li>
+<li><code><a title="src.persistence.database_connection.DatabaseConnection.query_instances" href="database_connection.html#src.persistence.database_connection.DatabaseConnection.query_instances">query_instances</a></code></li>
 </ul>
 </li>
 </ul>
@@ -303,9 +284,6 @@ values for it.</p></div>
 <ul>
 <li>
 <h4><code><a title="src.persistence.postgresql_connection.PostgreSQLConnection" href="#src.persistence.postgresql_connection.PostgreSQLConnection">PostgreSQLConnection</a></code></h4>
-<ul class="">
-<li><code><a title="src.persistence.postgresql_connection.PostgreSQLConnection.query_instances" href="#src.persistence.postgresql_connection.PostgreSQLConnection.query_instances">query_instances</a></code></li>
-</ul>
 </li>
 </ul>
 </li>

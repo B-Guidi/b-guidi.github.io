@@ -34,7 +34,17 @@ from src.model.factors.level_calc_types.level_calculation import RangeCalculatio
 
 
 class DateBasedFactor(Factor):
+    &#34;&#34;&#34;Factor whose value is calculated using average of the diference between received dates, and whose level selection
+    is range based.
+    &#34;&#34;&#34;
     def __init__(self, f_id, f_name, levels):
+        &#34;&#34;&#34;Constructor
+
+        Args:
+            f_id: an int that represents the id of the factor.
+            f_name: an str that represents the name of the factor.
+            levels: a list(int) that contains the levels of the factor.
+        &#34;&#34;&#34;
         super().__init__(f_id, f_name, levels, RangeCalculation())
         self.last_date = 0
         self.n_ocurr = 0
@@ -45,29 +55,33 @@ class DateBasedFactor(Factor):
                + &#39;, levels={}, last_date={}, time_sum={}&#39;.format(self.levels, self.last_date, self.time_sum)
 
     def copy(self):
-        &#34;&#34;&#34;
-        Makes a clean copy of the factor.
+        &#34;&#34;&#34;Makes a clean copy of the factor.
 
-        :return: RangeBasedFactor.
+        Returns:
+            a DateBasedFactor.
         &#34;&#34;&#34;
         return DateBasedFactor(self.id, self.name, self.levels)
 
     def is_valid_level_value(self, value):
-        &#34;&#34;&#34;
-        The value is valid if it is greater than 0.
+        &#34;&#34;&#34;The value is valid if it is greater than 0.
 
-        :param value: int
-        :return: bool
+        Args:
+            value: an int, that contains the value to validate.
+
+        Returns:
+            a bool with the result of the validation.
         &#34;&#34;&#34;
         return value &gt; 0
 
     def is_valid_event_value(self, value):
-        &#34;&#34;&#34;
-        Tries to format the value with the specific datetime format. If it raises an exception, then the value is not
+        &#34;&#34;&#34;Tries to format the value with the specific datetime format. If it raises an exception, then the value is not
             valid.
 
-        :param value: str
-        :return: bool
+        Args:
+            value: a str, that contains the date to validate.
+
+        Returns:
+            a bool with the result of the validation.
         &#34;&#34;&#34;
         try:
             datetime.datetime.strptime(value, &#34;%Y-%m-%d %H:%M:%S&#34;)
@@ -76,22 +90,24 @@ class DateBasedFactor(Factor):
             return False
 
     def format_level_value(self, value):
-        &#34;&#34;&#34;
-        Does not applies any formatting.
+        &#34;&#34;&#34;Does not applies any formatting.
 
-        :param value: str
-        :return: str
+        Args:
+            value: a str, that contains the value to format.
+
+        Returns:
+            an int with the formated value.
         &#34;&#34;&#34;
         formated = &#39;NaN&#39; if (value is np.NaN) else value
         return formated
 
     def calculate(self):
-        &#34;&#34;&#34;
-        Calculates the level and the value for the factor. The responsability of the calculation is delegated to the
+        &#34;&#34;&#34;Calculates the level and the value for the factor. The responsability of the calculation is delegated to the
             level calculation class.
 
-        :return: tuple(int, int) in case the time_sum and n_ocurr is not zero, or tuple(np.NaN, np.NaN) otherwise.
-            The first value is the factor level, and the second one is the factor value.
+        Returns:
+            a tuple(int, int) in case the time_sum and n_ocurr is not zero, or tuple(np.NaN, np.NaN) otherwise.  The
+                first value is the factor level, and the second one is the factor value.
         &#34;&#34;&#34;
         if self.time_sum == 0 or self.n_ocurr == 0:
             return np.NaN, np.NaN
@@ -100,12 +116,14 @@ class DateBasedFactor(Factor):
                    round(self.time_sum/self.n_ocurr)
 
     def add_new_ocurrence(self, new_value):
-        &#34;&#34;&#34;
-        Adds a new ocurrence to the factor. Sums the diference between the last two dates received, stores the last
+        &#34;&#34;&#34;Adds a new ocurrence to the factor. Sums the diference between the last two dates received, stores the last
             date, and increment the number of ocurrences by one.
 
-        :param new_value: str
-        :return: None
+        Args:
+            new_value: a str that contains the date value of the event.
+
+        Returns:
+            None
         &#34;&#34;&#34;
         new_date = datetime.datetime.strptime(new_value, &#34;%Y-%m-%d %H:%M:%S&#34;)
         if self.n_ocurr &gt; 0:
@@ -128,13 +146,34 @@ class DateBasedFactor(Factor):
 <span>(</span><span>f_id, f_name, levels)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Factor whose value is calculated using average of the diference between received dates, and whose level selection
+is range based.</p>
+<p>Constructor</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>f_id</code></strong></dt>
+<dd>an int that represents the id of the factor.</dd>
+<dt><strong><code>f_name</code></strong></dt>
+<dd>an str that represents the name of the factor.</dd>
+<dt><strong><code>levels</code></strong></dt>
+<dd>a list(int) that contains the levels of the factor.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class DateBasedFactor(Factor):
+    &#34;&#34;&#34;Factor whose value is calculated using average of the diference between received dates, and whose level selection
+    is range based.
+    &#34;&#34;&#34;
     def __init__(self, f_id, f_name, levels):
+        &#34;&#34;&#34;Constructor
+
+        Args:
+            f_id: an int that represents the id of the factor.
+            f_name: an str that represents the name of the factor.
+            levels: a list(int) that contains the levels of the factor.
+        &#34;&#34;&#34;
         super().__init__(f_id, f_name, levels, RangeCalculation())
         self.last_date = 0
         self.n_ocurr = 0
@@ -145,29 +184,33 @@ class DateBasedFactor(Factor):
                + &#39;, levels={}, last_date={}, time_sum={}&#39;.format(self.levels, self.last_date, self.time_sum)
 
     def copy(self):
-        &#34;&#34;&#34;
-        Makes a clean copy of the factor.
+        &#34;&#34;&#34;Makes a clean copy of the factor.
 
-        :return: RangeBasedFactor.
+        Returns:
+            a DateBasedFactor.
         &#34;&#34;&#34;
         return DateBasedFactor(self.id, self.name, self.levels)
 
     def is_valid_level_value(self, value):
-        &#34;&#34;&#34;
-        The value is valid if it is greater than 0.
+        &#34;&#34;&#34;The value is valid if it is greater than 0.
 
-        :param value: int
-        :return: bool
+        Args:
+            value: an int, that contains the value to validate.
+
+        Returns:
+            a bool with the result of the validation.
         &#34;&#34;&#34;
         return value &gt; 0
 
     def is_valid_event_value(self, value):
-        &#34;&#34;&#34;
-        Tries to format the value with the specific datetime format. If it raises an exception, then the value is not
+        &#34;&#34;&#34;Tries to format the value with the specific datetime format. If it raises an exception, then the value is not
             valid.
 
-        :param value: str
-        :return: bool
+        Args:
+            value: a str, that contains the date to validate.
+
+        Returns:
+            a bool with the result of the validation.
         &#34;&#34;&#34;
         try:
             datetime.datetime.strptime(value, &#34;%Y-%m-%d %H:%M:%S&#34;)
@@ -176,22 +219,24 @@ class DateBasedFactor(Factor):
             return False
 
     def format_level_value(self, value):
-        &#34;&#34;&#34;
-        Does not applies any formatting.
+        &#34;&#34;&#34;Does not applies any formatting.
 
-        :param value: str
-        :return: str
+        Args:
+            value: a str, that contains the value to format.
+
+        Returns:
+            an int with the formated value.
         &#34;&#34;&#34;
         formated = &#39;NaN&#39; if (value is np.NaN) else value
         return formated
 
     def calculate(self):
-        &#34;&#34;&#34;
-        Calculates the level and the value for the factor. The responsability of the calculation is delegated to the
+        &#34;&#34;&#34;Calculates the level and the value for the factor. The responsability of the calculation is delegated to the
             level calculation class.
 
-        :return: tuple(int, int) in case the time_sum and n_ocurr is not zero, or tuple(np.NaN, np.NaN) otherwise.
-            The first value is the factor level, and the second one is the factor value.
+        Returns:
+            a tuple(int, int) in case the time_sum and n_ocurr is not zero, or tuple(np.NaN, np.NaN) otherwise.  The
+                first value is the factor level, and the second one is the factor value.
         &#34;&#34;&#34;
         if self.time_sum == 0 or self.n_ocurr == 0:
             return np.NaN, np.NaN
@@ -200,12 +245,14 @@ class DateBasedFactor(Factor):
                    round(self.time_sum/self.n_ocurr)
 
     def add_new_ocurrence(self, new_value):
-        &#34;&#34;&#34;
-        Adds a new ocurrence to the factor. Sums the diference between the last two dates received, stores the last
+        &#34;&#34;&#34;Adds a new ocurrence to the factor. Sums the diference between the last two dates received, stores the last
             date, and increment the number of ocurrences by one.
 
-        :param new_value: str
-        :return: None
+        Args:
+            new_value: a str that contains the date value of the event.
+
+        Returns:
+            None
         &#34;&#34;&#34;
         new_date = datetime.datetime.strptime(new_value, &#34;%Y-%m-%d %H:%M:%S&#34;)
         if self.n_ocurr &gt; 0:
@@ -225,19 +272,26 @@ class DateBasedFactor(Factor):
 <dd>
 <div class="desc"><p>Adds a new ocurrence to the factor. Sums the diference between the last two dates received, stores the last
 date, and increment the number of ocurrences by one.</p>
-<p>:param new_value: str
-:return: None</p></div>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>new_value</code></strong></dt>
+<dd>a str that contains the date value of the event.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def add_new_ocurrence(self, new_value):
-    &#34;&#34;&#34;
-    Adds a new ocurrence to the factor. Sums the diference between the last two dates received, stores the last
+    &#34;&#34;&#34;Adds a new ocurrence to the factor. Sums the diference between the last two dates received, stores the last
         date, and increment the number of ocurrences by one.
 
-    :param new_value: str
-    :return: None
+    Args:
+        new_value: a str that contains the date value of the event.
+
+    Returns:
+        None
     &#34;&#34;&#34;
     new_date = datetime.datetime.strptime(new_value, &#34;%Y-%m-%d %H:%M:%S&#34;)
     if self.n_ocurr &gt; 0:
@@ -252,19 +306,21 @@ date, and increment the number of ocurrences by one.</p>
 <dd>
 <div class="desc"><p>Calculates the level and the value for the factor. The responsability of the calculation is delegated to the
 level calculation class.</p>
-<p>:return: tuple(int, int) in case the time_sum and n_ocurr is not zero, or tuple(np.NaN, np.NaN) otherwise.
-The first value is the factor level, and the second one is the factor value.</p></div>
+<h2 id="returns">Returns</h2>
+<p>a tuple(int, int) in case the time_sum and n_ocurr is not zero, or tuple(np.NaN, np.NaN) otherwise.
+The
+first value is the factor level, and the second one is the factor value.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def calculate(self):
-    &#34;&#34;&#34;
-    Calculates the level and the value for the factor. The responsability of the calculation is delegated to the
+    &#34;&#34;&#34;Calculates the level and the value for the factor. The responsability of the calculation is delegated to the
         level calculation class.
 
-    :return: tuple(int, int) in case the time_sum and n_ocurr is not zero, or tuple(np.NaN, np.NaN) otherwise.
-        The first value is the factor level, and the second one is the factor value.
+    Returns:
+        a tuple(int, int) in case the time_sum and n_ocurr is not zero, or tuple(np.NaN, np.NaN) otherwise.  The
+            first value is the factor level, and the second one is the factor value.
     &#34;&#34;&#34;
     if self.time_sum == 0 or self.n_ocurr == 0:
         return np.NaN, np.NaN
@@ -278,16 +334,17 @@ The first value is the factor level, and the second one is the factor value.</p>
 </code></dt>
 <dd>
 <div class="desc"><p>Makes a clean copy of the factor.</p>
-<p>:return: RangeBasedFactor.</p></div>
+<h2 id="returns">Returns</h2>
+<p>a DateBasedFactor.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def copy(self):
-    &#34;&#34;&#34;
-    Makes a clean copy of the factor.
+    &#34;&#34;&#34;Makes a clean copy of the factor.
 
-    :return: RangeBasedFactor.
+    Returns:
+        a DateBasedFactor.
     &#34;&#34;&#34;
     return DateBasedFactor(self.id, self.name, self.levels)</code></pre>
 </details>
@@ -297,18 +354,25 @@ The first value is the factor level, and the second one is the factor value.</p>
 </code></dt>
 <dd>
 <div class="desc"><p>Does not applies any formatting.</p>
-<p>:param value: str
-:return: str</p></div>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>value</code></strong></dt>
+<dd>a str, that contains the value to format.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>an int with the formated value.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def format_level_value(self, value):
-    &#34;&#34;&#34;
-    Does not applies any formatting.
+    &#34;&#34;&#34;Does not applies any formatting.
 
-    :param value: str
-    :return: str
+    Args:
+        value: a str, that contains the value to format.
+
+    Returns:
+        an int with the formated value.
     &#34;&#34;&#34;
     formated = &#39;NaN&#39; if (value is np.NaN) else value
     return formated</code></pre>
@@ -320,19 +384,26 @@ The first value is the factor level, and the second one is the factor value.</p>
 <dd>
 <div class="desc"><p>Tries to format the value with the specific datetime format. If it raises an exception, then the value is not
 valid.</p>
-<p>:param value: str
-:return: bool</p></div>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>value</code></strong></dt>
+<dd>a str, that contains the date to validate.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>a bool with the result of the validation.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def is_valid_event_value(self, value):
-    &#34;&#34;&#34;
-    Tries to format the value with the specific datetime format. If it raises an exception, then the value is not
+    &#34;&#34;&#34;Tries to format the value with the specific datetime format. If it raises an exception, then the value is not
         valid.
 
-    :param value: str
-    :return: bool
+    Args:
+        value: a str, that contains the date to validate.
+
+    Returns:
+        a bool with the result of the validation.
     &#34;&#34;&#34;
     try:
         datetime.datetime.strptime(value, &#34;%Y-%m-%d %H:%M:%S&#34;)
@@ -346,18 +417,25 @@ valid.</p>
 </code></dt>
 <dd>
 <div class="desc"><p>The value is valid if it is greater than 0.</p>
-<p>:param value: int
-:return: bool</p></div>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>value</code></strong></dt>
+<dd>an int, that contains the value to validate.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>a bool with the result of the validation.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def is_valid_level_value(self, value):
-    &#34;&#34;&#34;
-    The value is valid if it is greater than 0.
+    &#34;&#34;&#34;The value is valid if it is greater than 0.
 
-    :param value: int
-    :return: bool
+    Args:
+        value: an int, that contains the value to validate.
+
+    Returns:
+        a bool with the result of the validation.
     &#34;&#34;&#34;
     return value &gt; 0</code></pre>
 </details>

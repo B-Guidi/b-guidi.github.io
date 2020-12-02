@@ -30,11 +30,18 @@
 from src.model.factors.level_calc_types.level_calculation import SelectionCalculation
 import numpy as np
 
+
 class CualitativeFactor(Factor):
-    &#34;&#34;&#34;
-    Factor whose value is calculated using maximun ocurrence, and whose level selection is cualitative based.
+    &#34;&#34;&#34;Factor whose value is calculated using maximun ocurrence, and whose level selection is cualitative based.
     &#34;&#34;&#34;
     def __init__(self, f_id, f_name, levels):
+        &#34;&#34;&#34;Constructor
+
+        Args:
+            f_id: an int that represents the id of the factor.
+            f_name: an str that represents the name of the factor.
+            levels: a list(int) that contains the levels of the factor.
+        &#34;&#34;&#34;
         self.cualitative_levels = {}
         [self.cualitative_levels.update({l_name: [l_val, 0]}) for l_name, l_val in levels.items()]
         super().__init__(f_id, f_name, self.cualitative_levels, SelectionCalculation())
@@ -43,48 +50,55 @@ class CualitativeFactor(Factor):
         return super().__str__() + &#39;vals={}&#39;.format(self.cualitative_levels)
 
     def copy(self):
-        &#34;&#34;&#34;
-        Makes a clean copy of the factor.
+        &#34;&#34;&#34;Makes a clean copy of the factor.
 
-        :return: CualitativeFactor.
+        Returns:
+            a CualitativeFactor.
         &#34;&#34;&#34;
         levels = {}
         [levels.update({l_name: l_info[0]}) for l_name, l_info in self.cualitative_levels.items()]
         return CualitativeFactor(self.id, self.name, levels)
 
     def is_valid_level_value(self, value):
-        &#34;&#34;&#34;
-        Checks if the given value is a valid level value.
+        &#34;&#34;&#34;Checks if the given value is a valid level value.
 
-        :param value: str. Value to validate.
-        :return: bool
+        Args:
+            value: a str, that contains the value to validate.
+
+        Returns:
+            a bool with the result of the validation.
         &#34;&#34;&#34;
         return value in self.cualitative_levels
 
     def is_valid_event_value(self, value):
-        &#34;&#34;&#34;
-        Checks if the event value is valid.
+        &#34;&#34;&#34;Checks if the given value is a valid event value.
 
-        :param value: int
-        :return: bool
+        Args:
+            value: a str, that contains the value to validate.
+
+        Returns:
+            a bool with the result of the validation.
         &#34;&#34;&#34;
         return self.is_valid_level_value(value)
 
     def format_level_value(self, value):
-        &#34;&#34;&#34;
-        Does not applies any format to the value.
+        &#34;&#34;&#34;Does not applies any format to the value.
 
-        :param value: str.
-        :return: str.
+        Args:
+            value: a str, that contains the value to format.
+
+        Returns:
+            a str with the formated value.
         &#34;&#34;&#34;
         formated = &#39;NaN&#39; if (value is np.NaN) else value
         return formated
 
     def calculate(self):
-        &#34;&#34;&#34;
-        Calculates the level and the value for the factor. The level is the value with most ocurrences.
+        &#34;&#34;&#34;Calculates the level and the value for the factor. The level is the value with most ocurrences.
 
-        :return: tuple(int, str) where the first value is the factor level, and the second one is the level name.
+        Returns:
+            a tuple(int, str) if there is at least one ocurrence, or tuple(np.NaN, np.NaN) otherwise. The first value is
+                the factor level, and the second one is the level name.
         &#34;&#34;&#34;
         max_lv_id, max_lv_name, max_ocurr = -1, &#39;&#39;, -1
         for lv_name, lv_info in self.cualitative_levels.items():
@@ -97,11 +111,13 @@ class CualitativeFactor(Factor):
         return max_lv_id, max_lv_name
 
     def add_new_ocurrence(self, new_value):
-        &#34;&#34;&#34;
-        Increases the number of ocurrences for the given factor level by one.
+        &#34;&#34;&#34;Increases the number of ocurrences for the given factor level by one.
 
-        :param new_value: str
-        :return: None
+        Args:
+            new_value: a str that contains the value of the event.
+
+        Returns:
+            None
         &#34;&#34;&#34;
         actual_val = self.cualitative_levels[new_value][1]  # [1] contains the number of ocurrences for the given level.
         self.cualitative_levels[new_value][1] = actual_val + 1</code></pre>
@@ -121,16 +137,32 @@ class CualitativeFactor(Factor):
 <span>(</span><span>f_id, f_name, levels)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Factor whose value is calculated using maximun ocurrence, and whose level selection is cualitative based.</p></div>
+<div class="desc"><p>Factor whose value is calculated using maximun ocurrence, and whose level selection is cualitative based.</p>
+<p>Constructor</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>f_id</code></strong></dt>
+<dd>an int that represents the id of the factor.</dd>
+<dt><strong><code>f_name</code></strong></dt>
+<dd>an str that represents the name of the factor.</dd>
+<dt><strong><code>levels</code></strong></dt>
+<dd>a list(int) that contains the levels of the factor.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class CualitativeFactor(Factor):
-    &#34;&#34;&#34;
-    Factor whose value is calculated using maximun ocurrence, and whose level selection is cualitative based.
+    &#34;&#34;&#34;Factor whose value is calculated using maximun ocurrence, and whose level selection is cualitative based.
     &#34;&#34;&#34;
     def __init__(self, f_id, f_name, levels):
+        &#34;&#34;&#34;Constructor
+
+        Args:
+            f_id: an int that represents the id of the factor.
+            f_name: an str that represents the name of the factor.
+            levels: a list(int) that contains the levels of the factor.
+        &#34;&#34;&#34;
         self.cualitative_levels = {}
         [self.cualitative_levels.update({l_name: [l_val, 0]}) for l_name, l_val in levels.items()]
         super().__init__(f_id, f_name, self.cualitative_levels, SelectionCalculation())
@@ -139,48 +171,55 @@ class CualitativeFactor(Factor):
         return super().__str__() + &#39;vals={}&#39;.format(self.cualitative_levels)
 
     def copy(self):
-        &#34;&#34;&#34;
-        Makes a clean copy of the factor.
+        &#34;&#34;&#34;Makes a clean copy of the factor.
 
-        :return: CualitativeFactor.
+        Returns:
+            a CualitativeFactor.
         &#34;&#34;&#34;
         levels = {}
         [levels.update({l_name: l_info[0]}) for l_name, l_info in self.cualitative_levels.items()]
         return CualitativeFactor(self.id, self.name, levels)
 
     def is_valid_level_value(self, value):
-        &#34;&#34;&#34;
-        Checks if the given value is a valid level value.
+        &#34;&#34;&#34;Checks if the given value is a valid level value.
 
-        :param value: str. Value to validate.
-        :return: bool
+        Args:
+            value: a str, that contains the value to validate.
+
+        Returns:
+            a bool with the result of the validation.
         &#34;&#34;&#34;
         return value in self.cualitative_levels
 
     def is_valid_event_value(self, value):
-        &#34;&#34;&#34;
-        Checks if the event value is valid.
+        &#34;&#34;&#34;Checks if the given value is a valid event value.
 
-        :param value: int
-        :return: bool
+        Args:
+            value: a str, that contains the value to validate.
+
+        Returns:
+            a bool with the result of the validation.
         &#34;&#34;&#34;
         return self.is_valid_level_value(value)
 
     def format_level_value(self, value):
-        &#34;&#34;&#34;
-        Does not applies any format to the value.
+        &#34;&#34;&#34;Does not applies any format to the value.
 
-        :param value: str.
-        :return: str.
+        Args:
+            value: a str, that contains the value to format.
+
+        Returns:
+            a str with the formated value.
         &#34;&#34;&#34;
         formated = &#39;NaN&#39; if (value is np.NaN) else value
         return formated
 
     def calculate(self):
-        &#34;&#34;&#34;
-        Calculates the level and the value for the factor. The level is the value with most ocurrences.
+        &#34;&#34;&#34;Calculates the level and the value for the factor. The level is the value with most ocurrences.
 
-        :return: tuple(int, str) where the first value is the factor level, and the second one is the level name.
+        Returns:
+            a tuple(int, str) if there is at least one ocurrence, or tuple(np.NaN, np.NaN) otherwise. The first value is
+                the factor level, and the second one is the level name.
         &#34;&#34;&#34;
         max_lv_id, max_lv_name, max_ocurr = -1, &#39;&#39;, -1
         for lv_name, lv_info in self.cualitative_levels.items():
@@ -193,11 +232,13 @@ class CualitativeFactor(Factor):
         return max_lv_id, max_lv_name
 
     def add_new_ocurrence(self, new_value):
-        &#34;&#34;&#34;
-        Increases the number of ocurrences for the given factor level by one.
+        &#34;&#34;&#34;Increases the number of ocurrences for the given factor level by one.
 
-        :param new_value: str
-        :return: None
+        Args:
+            new_value: a str that contains the value of the event.
+
+        Returns:
+            None
         &#34;&#34;&#34;
         actual_val = self.cualitative_levels[new_value][1]  # [1] contains the number of ocurrences for the given level.
         self.cualitative_levels[new_value][1] = actual_val + 1</code></pre>
@@ -213,18 +254,25 @@ class CualitativeFactor(Factor):
 </code></dt>
 <dd>
 <div class="desc"><p>Increases the number of ocurrences for the given factor level by one.</p>
-<p>:param new_value: str
-:return: None</p></div>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>new_value</code></strong></dt>
+<dd>a str that contains the value of the event.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def add_new_ocurrence(self, new_value):
-    &#34;&#34;&#34;
-    Increases the number of ocurrences for the given factor level by one.
+    &#34;&#34;&#34;Increases the number of ocurrences for the given factor level by one.
 
-    :param new_value: str
-    :return: None
+    Args:
+        new_value: a str that contains the value of the event.
+
+    Returns:
+        None
     &#34;&#34;&#34;
     actual_val = self.cualitative_levels[new_value][1]  # [1] contains the number of ocurrences for the given level.
     self.cualitative_levels[new_value][1] = actual_val + 1</code></pre>
@@ -235,16 +283,19 @@ class CualitativeFactor(Factor):
 </code></dt>
 <dd>
 <div class="desc"><p>Calculates the level and the value for the factor. The level is the value with most ocurrences.</p>
-<p>:return: tuple(int, str) where the first value is the factor level, and the second one is the level name.</p></div>
+<h2 id="returns">Returns</h2>
+<p>a tuple(int, str) if there is at least one ocurrence, or tuple(np.NaN, np.NaN) otherwise. The first value is
+the factor level, and the second one is the level name.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def calculate(self):
-    &#34;&#34;&#34;
-    Calculates the level and the value for the factor. The level is the value with most ocurrences.
+    &#34;&#34;&#34;Calculates the level and the value for the factor. The level is the value with most ocurrences.
 
-    :return: tuple(int, str) where the first value is the factor level, and the second one is the level name.
+    Returns:
+        a tuple(int, str) if there is at least one ocurrence, or tuple(np.NaN, np.NaN) otherwise. The first value is
+            the factor level, and the second one is the level name.
     &#34;&#34;&#34;
     max_lv_id, max_lv_name, max_ocurr = -1, &#39;&#39;, -1
     for lv_name, lv_info in self.cualitative_levels.items():
@@ -262,16 +313,17 @@ class CualitativeFactor(Factor):
 </code></dt>
 <dd>
 <div class="desc"><p>Makes a clean copy of the factor.</p>
-<p>:return: CualitativeFactor.</p></div>
+<h2 id="returns">Returns</h2>
+<p>a CualitativeFactor.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def copy(self):
-    &#34;&#34;&#34;
-    Makes a clean copy of the factor.
+    &#34;&#34;&#34;Makes a clean copy of the factor.
 
-    :return: CualitativeFactor.
+    Returns:
+        a CualitativeFactor.
     &#34;&#34;&#34;
     levels = {}
     [levels.update({l_name: l_info[0]}) for l_name, l_info in self.cualitative_levels.items()]
@@ -283,18 +335,25 @@ class CualitativeFactor(Factor):
 </code></dt>
 <dd>
 <div class="desc"><p>Does not applies any format to the value.</p>
-<p>:param value: str.
-:return: str.</p></div>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>value</code></strong></dt>
+<dd>a str, that contains the value to format.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>a str with the formated value.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def format_level_value(self, value):
-    &#34;&#34;&#34;
-    Does not applies any format to the value.
+    &#34;&#34;&#34;Does not applies any format to the value.
 
-    :param value: str.
-    :return: str.
+    Args:
+        value: a str, that contains the value to format.
+
+    Returns:
+        a str with the formated value.
     &#34;&#34;&#34;
     formated = &#39;NaN&#39; if (value is np.NaN) else value
     return formated</code></pre>
@@ -304,19 +363,26 @@ class CualitativeFactor(Factor):
 <span>def <span class="ident">is_valid_event_value</span></span>(<span>self, value)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Checks if the event value is valid.</p>
-<p>:param value: int
-:return: bool</p></div>
+<div class="desc"><p>Checks if the given value is a valid event value.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>value</code></strong></dt>
+<dd>a str, that contains the value to validate.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>a bool with the result of the validation.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def is_valid_event_value(self, value):
-    &#34;&#34;&#34;
-    Checks if the event value is valid.
+    &#34;&#34;&#34;Checks if the given value is a valid event value.
 
-    :param value: int
-    :return: bool
+    Args:
+        value: a str, that contains the value to validate.
+
+    Returns:
+        a bool with the result of the validation.
     &#34;&#34;&#34;
     return self.is_valid_level_value(value)</code></pre>
 </details>
@@ -326,18 +392,25 @@ class CualitativeFactor(Factor):
 </code></dt>
 <dd>
 <div class="desc"><p>Checks if the given value is a valid level value.</p>
-<p>:param value: str. Value to validate.
-:return: bool</p></div>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>value</code></strong></dt>
+<dd>a str, that contains the value to validate.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>a bool with the result of the validation.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def is_valid_level_value(self, value):
-    &#34;&#34;&#34;
-    Checks if the given value is a valid level value.
+    &#34;&#34;&#34;Checks if the given value is a valid level value.
 
-    :param value: str. Value to validate.
-    :return: bool
+    Args:
+        value: a str, that contains the value to validate.
+
+    Returns:
+        a bool with the result of the validation.
     &#34;&#34;&#34;
     return value in self.cualitative_levels</code></pre>
 </details>

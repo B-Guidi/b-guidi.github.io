@@ -35,35 +35,37 @@ from src.model.factors import get_total_factors
 
 
 class InferenceAlgorithm(metaclass=abc.ABCMeta):
-    &#34;&#34;&#34;
-    Inference algorithm interface.
+    &#34;&#34;&#34;Inference algorithm interface.
     Defines the functionality of infering a dimension taking into account certain features and previously clasified
         instances.
     &#34;&#34;&#34;   
     @abc.abstractmethod
     def infer_dimensions(self, clasified_data, feats_to_clasify):
-        &#34;&#34;&#34;
-        Abstract method for dimension inference with previously clasified data.
+        &#34;&#34;&#34; Abstract method for dimension inference with previously clasified data.
 
-        :param clasified_data: dict(str, list(int)), where k is the name of a f or dimension in the model, and v is
-            a list of values for it.
-        :param feats_to_clasify: list(dict(str, int)) that contains the f levels that needs to be clasified. The
-            str key is a f name, and the int value is his corresponding level.
-        :return: a dict(str, int), where where k is the name of a dimension in the model, and v is the corresponding
-            value.
+        Args:
+            clasified_data: a dict(str, list(int)), where k is the name of a factor or dimension in the model, and v is
+                a list of values for it.
+            feats_to_clasify: a list(dict(str, int)) that contains the factor levels that needs to be clasified. The
+                str key is a factor name, and the int value is his corresponding level.
+        Returns:
+            a dict(str, int), where where k is the name of a dimension in the model, and v is the corresponding value.
         &#34;&#34;&#34;
         pass
 
 
 class NearestNeighbour(InferenceAlgorithm):
+    &#34;&#34;&#34;Nearest neighbour algorithm that implements the InferenceAlgorithm interface.
+    &#34;&#34;&#34;
     @staticmethod
     def __euclidian_dist(features_pair):
-        &#34;&#34;&#34;
-        Calculates the euclidian distance between the pairs. The euclidian distance is calculated with the formula:
+        &#34;&#34;&#34;Calculates the euclidian distance between the pairs. The euclidian distance is calculated with the formula:
             sqrt(sum(pow(f_a - f_b, 2)))
 
-        :param features_pair: list of tuples (int, int), that represents specific values of a feature.
-        :return: a float with the result of the calculation.
+        Args:
+            features_pair: a list of tuples (int, int), that represents specific values of a feature.
+        Returns:
+            a float with the result of the calculation.
         &#34;&#34;&#34;
         eucl_d = 0
         for f_a, f_b in features_pair:
@@ -71,15 +73,16 @@ class NearestNeighbour(InferenceAlgorithm):
         return sqrt(eucl_d)
 
     def infer_dimensions(self, clasified_data, feats_to_clasify):
-        &#34;&#34;&#34;
-        Infers the dimensions of the features received, using k nearest neighbour, with k = 1, and euclidean distance.
+        &#34;&#34;&#34;Infers the dimensions of the features received, using k nearest neighbour, with k = 1, and euclidean
+            distance.
 
-        :param clasified_data: dict(str, list(int)), where k is the name of a f or dimension in the model, and v is
-            a list of values for it.
-        :param feats_to_clasify: list(dict(str, int)) that contains the f levels that needs to be clasified. The
-            str key is a f name, and the int value is his corresponding level.
-        :return: a dict(str, int), where where k is the name of a dimension in the model, and v is the corresponding
-            value.
+        Args:
+            clasified_data: a dict(str, list(int)), where k is the name of a factor or dimension in the model, and v is
+                a list of values for it.
+            feats_to_clasify: a list(dict(str, int)) that contains the factor levels that needs to be clasified. The
+                str key is a factor name, and the int value is his corresponding level.
+        Returns:
+            a dict(str, int), where where k is the name of a dimension in the model, and v is the corresponding value.
         &#34;&#34;&#34;
         closest_instance, min_eucl_dist = -1, 9999
 
@@ -126,22 +129,21 @@ instances.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class InferenceAlgorithm(metaclass=abc.ABCMeta):
-    &#34;&#34;&#34;
-    Inference algorithm interface.
+    &#34;&#34;&#34;Inference algorithm interface.
     Defines the functionality of infering a dimension taking into account certain features and previously clasified
         instances.
     &#34;&#34;&#34;   
     @abc.abstractmethod
     def infer_dimensions(self, clasified_data, feats_to_clasify):
-        &#34;&#34;&#34;
-        Abstract method for dimension inference with previously clasified data.
+        &#34;&#34;&#34; Abstract method for dimension inference with previously clasified data.
 
-        :param clasified_data: dict(str, list(int)), where k is the name of a f or dimension in the model, and v is
-            a list of values for it.
-        :param feats_to_clasify: list(dict(str, int)) that contains the f levels that needs to be clasified. The
-            str key is a f name, and the int value is his corresponding level.
-        :return: a dict(str, int), where where k is the name of a dimension in the model, and v is the corresponding
-            value.
+        Args:
+            clasified_data: a dict(str, list(int)), where k is the name of a factor or dimension in the model, and v is
+                a list of values for it.
+            feats_to_clasify: a list(dict(str, int)) that contains the factor levels that needs to be clasified. The
+                str key is a factor name, and the int value is his corresponding level.
+        Returns:
+            a dict(str, int), where where k is the name of a dimension in the model, and v is the corresponding value.
         &#34;&#34;&#34;
         pass</code></pre>
 </details>
@@ -156,27 +158,32 @@ instances.</p></div>
 </code></dt>
 <dd>
 <div class="desc"><p>Abstract method for dimension inference with previously clasified data.</p>
-<p>:param clasified_data: dict(str, list(int)), where k is the name of a f or dimension in the model, and v is
-a list of values for it.
-:param feats_to_clasify: list(dict(str, int)) that contains the f levels that needs to be clasified. The
-str key is a f name, and the int value is his corresponding level.
-:return: a dict(str, int), where where k is the name of a dimension in the model, and v is the corresponding
-value.</p></div>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>clasified_data</code></strong></dt>
+<dd>a dict(str, list(int)), where k is the name of a factor or dimension in the model, and v is
+a list of values for it.</dd>
+<dt><strong><code>feats_to_clasify</code></strong></dt>
+<dd>a list(dict(str, int)) that contains the factor levels that needs to be clasified. The
+str key is a factor name, and the int value is his corresponding level.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>a dict(str, int), where where k is the name of a dimension in the model, and v is the corresponding value.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@abc.abstractmethod
 def infer_dimensions(self, clasified_data, feats_to_clasify):
-    &#34;&#34;&#34;
-    Abstract method for dimension inference with previously clasified data.
+    &#34;&#34;&#34; Abstract method for dimension inference with previously clasified data.
 
-    :param clasified_data: dict(str, list(int)), where k is the name of a f or dimension in the model, and v is
-        a list of values for it.
-    :param feats_to_clasify: list(dict(str, int)) that contains the f levels that needs to be clasified. The
-        str key is a f name, and the int value is his corresponding level.
-    :return: a dict(str, int), where where k is the name of a dimension in the model, and v is the corresponding
-        value.
+    Args:
+        clasified_data: a dict(str, list(int)), where k is the name of a factor or dimension in the model, and v is
+            a list of values for it.
+        feats_to_clasify: a list(dict(str, int)) that contains the factor levels that needs to be clasified. The
+            str key is a factor name, and the int value is his corresponding level.
+    Returns:
+        a dict(str, int), where where k is the name of a dimension in the model, and v is the corresponding value.
     &#34;&#34;&#34;
     pass</code></pre>
 </details>
@@ -187,22 +194,23 @@ def infer_dimensions(self, clasified_data, feats_to_clasify):
 <span>class <span class="ident">NearestNeighbour</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Inference algorithm interface.
-Defines the functionality of infering a dimension taking into account certain features and previously clasified
-instances.</p></div>
+<div class="desc"><p>Nearest neighbour algorithm that implements the InferenceAlgorithm interface.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class NearestNeighbour(InferenceAlgorithm):
+    &#34;&#34;&#34;Nearest neighbour algorithm that implements the InferenceAlgorithm interface.
+    &#34;&#34;&#34;
     @staticmethod
     def __euclidian_dist(features_pair):
-        &#34;&#34;&#34;
-        Calculates the euclidian distance between the pairs. The euclidian distance is calculated with the formula:
+        &#34;&#34;&#34;Calculates the euclidian distance between the pairs. The euclidian distance is calculated with the formula:
             sqrt(sum(pow(f_a - f_b, 2)))
 
-        :param features_pair: list of tuples (int, int), that represents specific values of a feature.
-        :return: a float with the result of the calculation.
+        Args:
+            features_pair: a list of tuples (int, int), that represents specific values of a feature.
+        Returns:
+            a float with the result of the calculation.
         &#34;&#34;&#34;
         eucl_d = 0
         for f_a, f_b in features_pair:
@@ -210,15 +218,16 @@ instances.</p></div>
         return sqrt(eucl_d)
 
     def infer_dimensions(self, clasified_data, feats_to_clasify):
-        &#34;&#34;&#34;
-        Infers the dimensions of the features received, using k nearest neighbour, with k = 1, and euclidean distance.
+        &#34;&#34;&#34;Infers the dimensions of the features received, using k nearest neighbour, with k = 1, and euclidean
+            distance.
 
-        :param clasified_data: dict(str, list(int)), where k is the name of a f or dimension in the model, and v is
-            a list of values for it.
-        :param feats_to_clasify: list(dict(str, int)) that contains the f levels that needs to be clasified. The
-            str key is a f name, and the int value is his corresponding level.
-        :return: a dict(str, int), where where k is the name of a dimension in the model, and v is the corresponding
-            value.
+        Args:
+            clasified_data: a dict(str, list(int)), where k is the name of a factor or dimension in the model, and v is
+                a list of values for it.
+            feats_to_clasify: a list(dict(str, int)) that contains the factor levels that needs to be clasified. The
+                str key is a factor name, and the int value is his corresponding level.
+        Returns:
+            a dict(str, int), where where k is the name of a dimension in the model, and v is the corresponding value.
         &#34;&#34;&#34;
         closest_instance, min_eucl_dist = -1, 9999
 
@@ -253,27 +262,34 @@ instances.</p></div>
 <span>def <span class="ident">infer_dimensions</span></span>(<span>self, clasified_data, feats_to_clasify)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Infers the dimensions of the features received, using k nearest neighbour, with k = 1, and euclidean distance.</p>
-<p>:param clasified_data: dict(str, list(int)), where k is the name of a f or dimension in the model, and v is
-a list of values for it.
-:param feats_to_clasify: list(dict(str, int)) that contains the f levels that needs to be clasified. The
-str key is a f name, and the int value is his corresponding level.
-:return: a dict(str, int), where where k is the name of a dimension in the model, and v is the corresponding
-value.</p></div>
+<div class="desc"><p>Infers the dimensions of the features received, using k nearest neighbour, with k = 1, and euclidean
+distance.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>clasified_data</code></strong></dt>
+<dd>a dict(str, list(int)), where k is the name of a factor or dimension in the model, and v is
+a list of values for it.</dd>
+<dt><strong><code>feats_to_clasify</code></strong></dt>
+<dd>a list(dict(str, int)) that contains the factor levels that needs to be clasified. The
+str key is a factor name, and the int value is his corresponding level.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>a dict(str, int), where where k is the name of a dimension in the model, and v is the corresponding value.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def infer_dimensions(self, clasified_data, feats_to_clasify):
-    &#34;&#34;&#34;
-    Infers the dimensions of the features received, using k nearest neighbour, with k = 1, and euclidean distance.
+    &#34;&#34;&#34;Infers the dimensions of the features received, using k nearest neighbour, with k = 1, and euclidean
+        distance.
 
-    :param clasified_data: dict(str, list(int)), where k is the name of a f or dimension in the model, and v is
-        a list of values for it.
-    :param feats_to_clasify: list(dict(str, int)) that contains the f levels that needs to be clasified. The
-        str key is a f name, and the int value is his corresponding level.
-    :return: a dict(str, int), where where k is the name of a dimension in the model, and v is the corresponding
-        value.
+    Args:
+        clasified_data: a dict(str, list(int)), where k is the name of a factor or dimension in the model, and v is
+            a list of values for it.
+        feats_to_clasify: a list(dict(str, int)) that contains the factor levels that needs to be clasified. The
+            str key is a factor name, and the int value is his corresponding level.
+    Returns:
+        a dict(str, int), where where k is the name of a dimension in the model, and v is the corresponding value.
     &#34;&#34;&#34;
     closest_instance, min_eucl_dist = -1, 9999
 

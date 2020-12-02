@@ -31,6 +31,14 @@
 
 class Factor(metaclass=abc.ABCMeta):
     def __init__(self, f_id, f_name, levels, level_calc):
+        &#34;&#34;&#34;Constructor
+
+        Args:
+            f_id: an int that represents the id of the factor.
+            f_name: an str that represents the name of the factor.
+            levels: a list(int) that contains the levels of the factor.
+            level_calc: a LevelCalculation objects used for the level calculation of the factor.
+        &#34;&#34;&#34;
         self.id = f_id
         self.name = f_name
         self.levels = levels
@@ -44,78 +52,88 @@ class Factor(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def copy(self):
-        &#34;&#34;&#34;
-        Makes a clean copy of the factor.
+        &#34;&#34;&#34;Makes a clean copy of the factor.
 
-        :return: Factor.
+        Returns:
+            a Factor.
         &#34;&#34;&#34;
         pass
 
     @abc.abstractmethod
     def is_valid_level_value(self, value):
-        &#34;&#34;&#34;
-        Checks if the given value is a valid level value.
+        &#34;&#34;&#34;Checks if the given value is a valid level value.
 
-        :param value: Any. Value to validate.
-        :return: bool
+        Args:
+            value: value to validate.
+
+        Returns:
+            a bool with the result of the validation.
         &#34;&#34;&#34;
         pass
 
     @abc.abstractmethod
     def is_valid_event_value(self, value):
-        &#34;&#34;&#34;
-        Checks if the event value is valid.
+        &#34;&#34;&#34;Checks if the given value is a valid event value.
 
-        :param value: Any
-        :return: bool
+        Args:
+            value: value to validate.
+
+        Returns:
+            a bool with the result of the validation.
         &#34;&#34;&#34;
         pass
 
     @abc.abstractmethod
     def format_level_value(self, value):
-        &#34;&#34;&#34;
-        Applies a specific format according to the implementation
+        &#34;&#34;&#34;Applies a specific format according to the implementation
 
-        :param value: Any. Value to be formatted.
-        :return: Any. Value formatted.
+        Args:
+            value: value to format.
+
+        Returns:
+            the formated value.
         &#34;&#34;&#34;
         pass
 
     @abc.abstractmethod
     def calculate(self):
-        &#34;&#34;&#34;
-        Calculates the level and the value for the factor.
+        &#34;&#34;&#34;Calculates the level and the value for the factor. The level is the value with most ocurrences.
 
-        :return: tuple(int, Any).
+        Returns:
+            a tuple(int, Any) where the first value is the factor level, and the second one is the level name.
         &#34;&#34;&#34;
         pass
 
     @abc.abstractmethod
     def add_new_ocurrence(self, new_value):
-        &#34;&#34;&#34;
-        Invoked when a new ocurrence of the factor is detected.
+        &#34;&#34;&#34;Invoked when a new ocurrence of the factor is detected.
 
-        :param new_value: Any
-        :return: None
+        Args:
+            new_value: value of the event.
+
+        Returns:
+            None
         &#34;&#34;&#34;
         pass
 
     def get_cardinality(self):
-        &#34;&#34;&#34;
-        Calculates the cardinality for the factor. The responsability of the calculation is delegated to the level
+        &#34;&#34;&#34;Calculates the cardinality for the factor. The responsability of the calculation is delegated to the level
         calculation type.
 
-        :return: int
+        Returns:
+            an int that represents the cardinality of the factor.
         &#34;&#34;&#34;
         return self.level_calc.get_cardinality(len(self.levels))
 
     def get_level(self, value):
-        &#34;&#34;&#34;
-        Returns the corresponding level for the given value. The responsability is delegated to the level calculation
+        &#34;&#34;&#34;Returns the corresponding level for the given value. The responsability is delegated to the level calculation
             type.
 
-        :param value: Any.
-        :return: int
+        Args:
+            value: value whose level is going to be obtained.
+
+        Returns:
+            an int that represents the level for the given value.
         &#34;&#34;&#34;
         return self.level_calc.determine_level(self.levels, value)</code></pre>
 </details>
@@ -134,13 +152,32 @@ class Factor(metaclass=abc.ABCMeta):
 <span>(</span><span>f_id, f_name, levels, level_calc)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Constructor</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>f_id</code></strong></dt>
+<dd>an int that represents the id of the factor.</dd>
+<dt><strong><code>f_name</code></strong></dt>
+<dd>an str that represents the name of the factor.</dd>
+<dt><strong><code>levels</code></strong></dt>
+<dd>a list(int) that contains the levels of the factor.</dd>
+<dt><strong><code>level_calc</code></strong></dt>
+<dd>a LevelCalculation objects used for the level calculation of the factor.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Factor(metaclass=abc.ABCMeta):
     def __init__(self, f_id, f_name, levels, level_calc):
+        &#34;&#34;&#34;Constructor
+
+        Args:
+            f_id: an int that represents the id of the factor.
+            f_name: an str that represents the name of the factor.
+            levels: a list(int) that contains the levels of the factor.
+            level_calc: a LevelCalculation objects used for the level calculation of the factor.
+        &#34;&#34;&#34;
         self.id = f_id
         self.name = f_name
         self.levels = levels
@@ -154,78 +191,88 @@ class Factor(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def copy(self):
-        &#34;&#34;&#34;
-        Makes a clean copy of the factor.
+        &#34;&#34;&#34;Makes a clean copy of the factor.
 
-        :return: Factor.
+        Returns:
+            a Factor.
         &#34;&#34;&#34;
         pass
 
     @abc.abstractmethod
     def is_valid_level_value(self, value):
-        &#34;&#34;&#34;
-        Checks if the given value is a valid level value.
+        &#34;&#34;&#34;Checks if the given value is a valid level value.
 
-        :param value: Any. Value to validate.
-        :return: bool
+        Args:
+            value: value to validate.
+
+        Returns:
+            a bool with the result of the validation.
         &#34;&#34;&#34;
         pass
 
     @abc.abstractmethod
     def is_valid_event_value(self, value):
-        &#34;&#34;&#34;
-        Checks if the event value is valid.
+        &#34;&#34;&#34;Checks if the given value is a valid event value.
 
-        :param value: Any
-        :return: bool
+        Args:
+            value: value to validate.
+
+        Returns:
+            a bool with the result of the validation.
         &#34;&#34;&#34;
         pass
 
     @abc.abstractmethod
     def format_level_value(self, value):
-        &#34;&#34;&#34;
-        Applies a specific format according to the implementation
+        &#34;&#34;&#34;Applies a specific format according to the implementation
 
-        :param value: Any. Value to be formatted.
-        :return: Any. Value formatted.
+        Args:
+            value: value to format.
+
+        Returns:
+            the formated value.
         &#34;&#34;&#34;
         pass
 
     @abc.abstractmethod
     def calculate(self):
-        &#34;&#34;&#34;
-        Calculates the level and the value for the factor.
+        &#34;&#34;&#34;Calculates the level and the value for the factor. The level is the value with most ocurrences.
 
-        :return: tuple(int, Any).
+        Returns:
+            a tuple(int, Any) where the first value is the factor level, and the second one is the level name.
         &#34;&#34;&#34;
         pass
 
     @abc.abstractmethod
     def add_new_ocurrence(self, new_value):
-        &#34;&#34;&#34;
-        Invoked when a new ocurrence of the factor is detected.
+        &#34;&#34;&#34;Invoked when a new ocurrence of the factor is detected.
 
-        :param new_value: Any
-        :return: None
+        Args:
+            new_value: value of the event.
+
+        Returns:
+            None
         &#34;&#34;&#34;
         pass
 
     def get_cardinality(self):
-        &#34;&#34;&#34;
-        Calculates the cardinality for the factor. The responsability of the calculation is delegated to the level
+        &#34;&#34;&#34;Calculates the cardinality for the factor. The responsability of the calculation is delegated to the level
         calculation type.
 
-        :return: int
+        Returns:
+            an int that represents the cardinality of the factor.
         &#34;&#34;&#34;
         return self.level_calc.get_cardinality(len(self.levels))
 
     def get_level(self, value):
-        &#34;&#34;&#34;
-        Returns the corresponding level for the given value. The responsability is delegated to the level calculation
+        &#34;&#34;&#34;Returns the corresponding level for the given value. The responsability is delegated to the level calculation
             type.
 
-        :param value: Any.
-        :return: int
+        Args:
+            value: value whose level is going to be obtained.
+
+        Returns:
+            an int that represents the level for the given value.
         &#34;&#34;&#34;
         return self.level_calc.determine_level(self.levels, value)</code></pre>
 </details>
@@ -242,19 +289,26 @@ class Factor(metaclass=abc.ABCMeta):
 </code></dt>
 <dd>
 <div class="desc"><p>Invoked when a new ocurrence of the factor is detected.</p>
-<p>:param new_value: Any
-:return: None</p></div>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>new_value</code></strong></dt>
+<dd>value of the event.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@abc.abstractmethod
 def add_new_ocurrence(self, new_value):
-    &#34;&#34;&#34;
-    Invoked when a new ocurrence of the factor is detected.
+    &#34;&#34;&#34;Invoked when a new ocurrence of the factor is detected.
 
-    :param new_value: Any
-    :return: None
+    Args:
+        new_value: value of the event.
+
+    Returns:
+        None
     &#34;&#34;&#34;
     pass</code></pre>
 </details>
@@ -263,18 +317,19 @@ def add_new_ocurrence(self, new_value):
 <span>def <span class="ident">calculate</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Calculates the level and the value for the factor.</p>
-<p>:return: tuple(int, Any).</p></div>
+<div class="desc"><p>Calculates the level and the value for the factor. The level is the value with most ocurrences.</p>
+<h2 id="returns">Returns</h2>
+<p>a tuple(int, Any) where the first value is the factor level, and the second one is the level name.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@abc.abstractmethod
 def calculate(self):
-    &#34;&#34;&#34;
-    Calculates the level and the value for the factor.
+    &#34;&#34;&#34;Calculates the level and the value for the factor. The level is the value with most ocurrences.
 
-    :return: tuple(int, Any).
+    Returns:
+        a tuple(int, Any) where the first value is the factor level, and the second one is the level name.
     &#34;&#34;&#34;
     pass</code></pre>
 </details>
@@ -284,17 +339,18 @@ def calculate(self):
 </code></dt>
 <dd>
 <div class="desc"><p>Makes a clean copy of the factor.</p>
-<p>:return: Factor.</p></div>
+<h2 id="returns">Returns</h2>
+<p>a Factor.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@abc.abstractmethod
 def copy(self):
-    &#34;&#34;&#34;
-    Makes a clean copy of the factor.
+    &#34;&#34;&#34;Makes a clean copy of the factor.
 
-    :return: Factor.
+    Returns:
+        a Factor.
     &#34;&#34;&#34;
     pass</code></pre>
 </details>
@@ -304,19 +360,26 @@ def copy(self):
 </code></dt>
 <dd>
 <div class="desc"><p>Applies a specific format according to the implementation</p>
-<p>:param value: Any. Value to be formatted.
-:return: Any. Value formatted.</p></div>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>value</code></strong></dt>
+<dd>value to format.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>the formated value.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@abc.abstractmethod
 def format_level_value(self, value):
-    &#34;&#34;&#34;
-    Applies a specific format according to the implementation
+    &#34;&#34;&#34;Applies a specific format according to the implementation
 
-    :param value: Any. Value to be formatted.
-    :return: Any. Value formatted.
+    Args:
+        value: value to format.
+
+    Returns:
+        the formated value.
     &#34;&#34;&#34;
     pass</code></pre>
 </details>
@@ -327,17 +390,18 @@ def format_level_value(self, value):
 <dd>
 <div class="desc"><p>Calculates the cardinality for the factor. The responsability of the calculation is delegated to the level
 calculation type.</p>
-<p>:return: int</p></div>
+<h2 id="returns">Returns</h2>
+<p>an int that represents the cardinality of the factor.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_cardinality(self):
-    &#34;&#34;&#34;
-    Calculates the cardinality for the factor. The responsability of the calculation is delegated to the level
+    &#34;&#34;&#34;Calculates the cardinality for the factor. The responsability of the calculation is delegated to the level
     calculation type.
 
-    :return: int
+    Returns:
+        an int that represents the cardinality of the factor.
     &#34;&#34;&#34;
     return self.level_calc.get_cardinality(len(self.levels))</code></pre>
 </details>
@@ -348,19 +412,26 @@ calculation type.</p>
 <dd>
 <div class="desc"><p>Returns the corresponding level for the given value. The responsability is delegated to the level calculation
 type.</p>
-<p>:param value: Any.
-:return: int</p></div>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>value</code></strong></dt>
+<dd>value whose level is going to be obtained.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>an int that represents the level for the given value.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_level(self, value):
-    &#34;&#34;&#34;
-    Returns the corresponding level for the given value. The responsability is delegated to the level calculation
+    &#34;&#34;&#34;Returns the corresponding level for the given value. The responsability is delegated to the level calculation
         type.
 
-    :param value: Any.
-    :return: int
+    Args:
+        value: value whose level is going to be obtained.
+
+    Returns:
+        an int that represents the level for the given value.
     &#34;&#34;&#34;
     return self.level_calc.determine_level(self.levels, value)</code></pre>
 </details>
@@ -382,20 +453,27 @@ type.</p>
 <span>def <span class="ident">is_valid_event_value</span></span>(<span>self, value)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Checks if the event value is valid.</p>
-<p>:param value: Any
-:return: bool</p></div>
+<div class="desc"><p>Checks if the given value is a valid event value.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>value</code></strong></dt>
+<dd>value to validate.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>a bool with the result of the validation.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@abc.abstractmethod
 def is_valid_event_value(self, value):
-    &#34;&#34;&#34;
-    Checks if the event value is valid.
+    &#34;&#34;&#34;Checks if the given value is a valid event value.
 
-    :param value: Any
-    :return: bool
+    Args:
+        value: value to validate.
+
+    Returns:
+        a bool with the result of the validation.
     &#34;&#34;&#34;
     pass</code></pre>
 </details>
@@ -405,19 +483,26 @@ def is_valid_event_value(self, value):
 </code></dt>
 <dd>
 <div class="desc"><p>Checks if the given value is a valid level value.</p>
-<p>:param value: Any. Value to validate.
-:return: bool</p></div>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>value</code></strong></dt>
+<dd>value to validate.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>a bool with the result of the validation.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@abc.abstractmethod
 def is_valid_level_value(self, value):
-    &#34;&#34;&#34;
-    Checks if the given value is a valid level value.
+    &#34;&#34;&#34;Checks if the given value is a valid level value.
 
-    :param value: Any. Value to validate.
-    :return: bool
+    Args:
+        value: value to validate.
+
+    Returns:
+        a bool with the result of the validation.
     &#34;&#34;&#34;
     pass</code></pre>
 </details>

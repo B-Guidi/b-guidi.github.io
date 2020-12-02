@@ -30,59 +30,59 @@
 
 
 class DatabaseConnection(metaclass=abc.ABCMeta):
-    &#34;&#34;&#34;
-    Database connection interface.
+    &#34;&#34;&#34;Database connection interface.
     Defines the required functionality to handle persistance of the data required by the system.
     &#34;&#34;&#34;
 
     @abc.abstractmethod
     def insert_instances(self, instances, levels_calculated):
-        &#34;&#34;&#34;
-        Inserts the given instances in the database.
+        &#34;&#34;&#34;Inserts the given instances in the database.
 
-        :param instances: list(Instance) that contains the instances to insert in the database.
-        :param levels_calculated: boolean that determines wheter or not the levels for features where previously
-            calculated.
-        :return: None
+        Args:
+            instances: a list(Instance) that contains the instances to insert in the database.
+            levels_calculated: a bool that determines wheter or not the levels for features where previously calculated.
+        Returns:
+            None
         &#34;&#34;&#34;
         pass
 
     @abc.abstractmethod
     def query_instances(self):
-        &#34;&#34;&#34;
-        Queries the existing instances in the database.
+        &#34;&#34;&#34;Queries the existing instances in the database.
 
-        :return: dict(str, list(int)), where k is the name of a f or dimension in the model, and v is a list of
-         values for it.
+        Returns:
+            a dict(str, list(int)), where k is the name of a factor or dimension in the model, and v is a list of values
+                for it.
         &#34;&#34;&#34;
         pass
 
     @abc.abstractmethod
     def insert_events(self, events):
-        &#34;&#34;&#34;
-        Inserts the given events in the database.
+        &#34;&#34;&#34;Inserts the given events in the database.
 
-        :param events: list({&#39;user_id&#39;: int, &#39;factor_id&#39;: int, &#39;value&#39;: Any}) with events to insert in the database.
-        :return: None
+        Args:
+            events: a list({&#39;user_id&#39;: int, &#39;factor_id&#39;: int, &#39;value&#39;: Any}) with events to insert in the database.
+        Returns:
+            None
         &#34;&#34;&#34;
         pass
 
     @abc.abstractmethod
     def query_events(self):
-        &#34;&#34;&#34;
-        Queries the existing events in the database.
+        &#34;&#34;&#34;Queries the existing events in the database.
 
-        :return: list({&#39;user_id&#39;: int, &#39;factor_id&#39;: int, &#39;value&#39;: Any}) that contains all the events stored in the
-            database.
+        Returns:
+            a list({&#39;user_id&#39;: int, &#39;factor_id&#39;: int, &#39;value&#39;: Any}) that contains all the events stored in the
+                database.
         &#34;&#34;&#34;
         pass
 
     @abc.abstractmethod
     def delete_existing_events(self):
-        &#34;&#34;&#34;
-        Deletes all the existing events in the database.
+        &#34;&#34;&#34;Deletes all the existing events in the database.
 
-        :return: None
+        Returns:
+            None
         &#34;&#34;&#34;
         pass</code></pre>
 </details>
@@ -107,59 +107,59 @@ Defines the required functionality to handle persistance of the data required by
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class DatabaseConnection(metaclass=abc.ABCMeta):
-    &#34;&#34;&#34;
-    Database connection interface.
+    &#34;&#34;&#34;Database connection interface.
     Defines the required functionality to handle persistance of the data required by the system.
     &#34;&#34;&#34;
 
     @abc.abstractmethod
     def insert_instances(self, instances, levels_calculated):
-        &#34;&#34;&#34;
-        Inserts the given instances in the database.
+        &#34;&#34;&#34;Inserts the given instances in the database.
 
-        :param instances: list(Instance) that contains the instances to insert in the database.
-        :param levels_calculated: boolean that determines wheter or not the levels for features where previously
-            calculated.
-        :return: None
+        Args:
+            instances: a list(Instance) that contains the instances to insert in the database.
+            levels_calculated: a bool that determines wheter or not the levels for features where previously calculated.
+        Returns:
+            None
         &#34;&#34;&#34;
         pass
 
     @abc.abstractmethod
     def query_instances(self):
-        &#34;&#34;&#34;
-        Queries the existing instances in the database.
+        &#34;&#34;&#34;Queries the existing instances in the database.
 
-        :return: dict(str, list(int)), where k is the name of a f or dimension in the model, and v is a list of
-         values for it.
+        Returns:
+            a dict(str, list(int)), where k is the name of a factor or dimension in the model, and v is a list of values
+                for it.
         &#34;&#34;&#34;
         pass
 
     @abc.abstractmethod
     def insert_events(self, events):
-        &#34;&#34;&#34;
-        Inserts the given events in the database.
+        &#34;&#34;&#34;Inserts the given events in the database.
 
-        :param events: list({&#39;user_id&#39;: int, &#39;factor_id&#39;: int, &#39;value&#39;: Any}) with events to insert in the database.
-        :return: None
+        Args:
+            events: a list({&#39;user_id&#39;: int, &#39;factor_id&#39;: int, &#39;value&#39;: Any}) with events to insert in the database.
+        Returns:
+            None
         &#34;&#34;&#34;
         pass
 
     @abc.abstractmethod
     def query_events(self):
-        &#34;&#34;&#34;
-        Queries the existing events in the database.
+        &#34;&#34;&#34;Queries the existing events in the database.
 
-        :return: list({&#39;user_id&#39;: int, &#39;factor_id&#39;: int, &#39;value&#39;: Any}) that contains all the events stored in the
-            database.
+        Returns:
+            a list({&#39;user_id&#39;: int, &#39;factor_id&#39;: int, &#39;value&#39;: Any}) that contains all the events stored in the
+                database.
         &#34;&#34;&#34;
         pass
 
     @abc.abstractmethod
     def delete_existing_events(self):
-        &#34;&#34;&#34;
-        Deletes all the existing events in the database.
+        &#34;&#34;&#34;Deletes all the existing events in the database.
 
-        :return: None
+        Returns:
+            None
         &#34;&#34;&#34;
         pass</code></pre>
 </details>
@@ -174,17 +174,18 @@ Defines the required functionality to handle persistance of the data required by
 </code></dt>
 <dd>
 <div class="desc"><p>Deletes all the existing events in the database.</p>
-<p>:return: None</p></div>
+<h2 id="returns">Returns</h2>
+<p>None</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@abc.abstractmethod
 def delete_existing_events(self):
-    &#34;&#34;&#34;
-    Deletes all the existing events in the database.
+    &#34;&#34;&#34;Deletes all the existing events in the database.
 
-    :return: None
+    Returns:
+        None
     &#34;&#34;&#34;
     pass</code></pre>
 </details>
@@ -194,19 +195,25 @@ def delete_existing_events(self):
 </code></dt>
 <dd>
 <div class="desc"><p>Inserts the given events in the database.</p>
-<p>:param events: list({'user_id': int, 'factor_id': int, 'value': Any}) with events to insert in the database.
-:return: None</p></div>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>events</code></strong></dt>
+<dd>a list({'user_id': int, 'factor_id': int, 'value': Any}) with events to insert in the database.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@abc.abstractmethod
 def insert_events(self, events):
-    &#34;&#34;&#34;
-    Inserts the given events in the database.
+    &#34;&#34;&#34;Inserts the given events in the database.
 
-    :param events: list({&#39;user_id&#39;: int, &#39;factor_id&#39;: int, &#39;value&#39;: Any}) with events to insert in the database.
-    :return: None
+    Args:
+        events: a list({&#39;user_id&#39;: int, &#39;factor_id&#39;: int, &#39;value&#39;: Any}) with events to insert in the database.
+    Returns:
+        None
     &#34;&#34;&#34;
     pass</code></pre>
 </details>
@@ -216,23 +223,28 @@ def insert_events(self, events):
 </code></dt>
 <dd>
 <div class="desc"><p>Inserts the given instances in the database.</p>
-<p>:param instances: list(Instance) that contains the instances to insert in the database.
-:param levels_calculated: boolean that determines wheter or not the levels for features where previously
-calculated.
-:return: None</p></div>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>instances</code></strong></dt>
+<dd>a list(Instance) that contains the instances to insert in the database.</dd>
+<dt><strong><code>levels_calculated</code></strong></dt>
+<dd>a bool that determines wheter or not the levels for features where previously calculated.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@abc.abstractmethod
 def insert_instances(self, instances, levels_calculated):
-    &#34;&#34;&#34;
-    Inserts the given instances in the database.
+    &#34;&#34;&#34;Inserts the given instances in the database.
 
-    :param instances: list(Instance) that contains the instances to insert in the database.
-    :param levels_calculated: boolean that determines wheter or not the levels for features where previously
-        calculated.
-    :return: None
+    Args:
+        instances: a list(Instance) that contains the instances to insert in the database.
+        levels_calculated: a bool that determines wheter or not the levels for features where previously calculated.
+    Returns:
+        None
     &#34;&#34;&#34;
     pass</code></pre>
 </details>
@@ -242,7 +254,8 @@ def insert_instances(self, instances, levels_calculated):
 </code></dt>
 <dd>
 <div class="desc"><p>Queries the existing events in the database.</p>
-<p>:return: list({'user_id': int, 'factor_id': int, 'value': Any}) that contains all the events stored in the
+<h2 id="returns">Returns</h2>
+<p>a list({'user_id': int, 'factor_id': int, 'value': Any}) that contains all the events stored in the
 database.</p></div>
 <details class="source">
 <summary>
@@ -250,11 +263,11 @@ database.</p></div>
 </summary>
 <pre><code class="python">@abc.abstractmethod
 def query_events(self):
-    &#34;&#34;&#34;
-    Queries the existing events in the database.
+    &#34;&#34;&#34;Queries the existing events in the database.
 
-    :return: list({&#39;user_id&#39;: int, &#39;factor_id&#39;: int, &#39;value&#39;: Any}) that contains all the events stored in the
-        database.
+    Returns:
+        a list({&#39;user_id&#39;: int, &#39;factor_id&#39;: int, &#39;value&#39;: Any}) that contains all the events stored in the
+            database.
     &#34;&#34;&#34;
     pass</code></pre>
 </details>
@@ -264,19 +277,20 @@ def query_events(self):
 </code></dt>
 <dd>
 <div class="desc"><p>Queries the existing instances in the database.</p>
-<p>:return: dict(str, list(int)), where k is the name of a f or dimension in the model, and v is a list of
-values for it.</p></div>
+<h2 id="returns">Returns</h2>
+<p>a dict(str, list(int)), where k is the name of a factor or dimension in the model, and v is a list of values
+for it.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@abc.abstractmethod
 def query_instances(self):
-    &#34;&#34;&#34;
-    Queries the existing instances in the database.
+    &#34;&#34;&#34;Queries the existing instances in the database.
 
-    :return: dict(str, list(int)), where k is the name of a f or dimension in the model, and v is a list of
-     values for it.
+    Returns:
+        a dict(str, list(int)), where k is the name of a factor or dimension in the model, and v is a list of values
+            for it.
     &#34;&#34;&#34;
     pass</code></pre>
 </details>
